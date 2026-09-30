@@ -7,8 +7,11 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.History
@@ -134,38 +137,69 @@ fun MainAppScreen(
         modifier = Modifier.fillMaxSize(),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.testTag("bottom_nav_bar")
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface)
             ) {
-                NavigationBarItem(
-                    selected = currentTab == OmniScanTab.SCAN,
-                    onClick = { currentTab = OmniScanTab.SCAN },
-                    icon = { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) },
-                    label = { Text(stringResource(R.string.tab_scan)) },
-                    modifier = Modifier.testTag("nav_tab_scan")
-                )
-                NavigationBarItem(
-                    selected = currentTab == OmniScanTab.HISTORY,
-                    onClick = { currentTab = OmniScanTab.HISTORY },
-                    icon = { Icon(Icons.Default.History, contentDescription = stringResource(R.string.tab_history)) },
-                    label = { Text(stringResource(R.string.tab_history)) },
-                    modifier = Modifier.testTag("nav_tab_history")
-                )
-                NavigationBarItem(
-                    selected = currentTab == OmniScanTab.GENERATE,
-                    onClick = { currentTab = OmniScanTab.GENERATE },
-                    icon = { Icon(Icons.Default.QrCode, contentDescription = stringResource(R.string.tab_generate)) },
-                    label = { Text(stringResource(R.string.tab_generate)) },
-                    modifier = Modifier.testTag("nav_tab_generate")
-                )
-                NavigationBarItem(
-                    selected = currentTab == OmniScanTab.SETTINGS,
-                    onClick = { currentTab = OmniScanTab.SETTINGS },
-                    icon = { Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.tab_settings)) },
-                    label = { Text(stringResource(R.string.tab_settings)) },
-                    modifier = Modifier.testTag("nav_tab_settings")
-                )
+                // Docked ironSource & Pangle Banner Ad directly above Bottom Navigation Bar
+                if (currentTab != OmniScanTab.SCAN) {
+                    com.example.ads.IronSourceBanner()
+                }
+
+                NavigationBar(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    modifier = Modifier.testTag("bottom_nav_bar")
+                ) {
+                    NavigationBarItem(
+                        selected = currentTab == OmniScanTab.SCAN,
+                        onClick = {
+                            if (currentTab != OmniScanTab.SCAN) {
+                                currentTab = OmniScanTab.SCAN
+                                onUserAction()
+                            }
+                        },
+                        icon = { Icon(Icons.Default.QrCodeScanner, contentDescription = stringResource(R.string.tab_scan)) },
+                        label = { Text(stringResource(R.string.tab_scan)) },
+                        modifier = Modifier.testTag("nav_tab_scan")
+                    )
+                    NavigationBarItem(
+                        selected = currentTab == OmniScanTab.HISTORY,
+                        onClick = {
+                            if (currentTab != OmniScanTab.HISTORY) {
+                                currentTab = OmniScanTab.HISTORY
+                                onUserAction()
+                            }
+                        },
+                        icon = { Icon(Icons.Default.History, contentDescription = stringResource(R.string.tab_history)) },
+                        label = { Text(stringResource(R.string.tab_history)) },
+                        modifier = Modifier.testTag("nav_tab_history")
+                    )
+                    NavigationBarItem(
+                        selected = currentTab == OmniScanTab.GENERATE,
+                        onClick = {
+                            if (currentTab != OmniScanTab.GENERATE) {
+                                currentTab = OmniScanTab.GENERATE
+                                onUserAction()
+                            }
+                        },
+                        icon = { Icon(Icons.Default.QrCode, contentDescription = stringResource(R.string.tab_generate)) },
+                        label = { Text(stringResource(R.string.tab_generate)) },
+                        modifier = Modifier.testTag("nav_tab_generate")
+                    )
+                    NavigationBarItem(
+                        selected = currentTab == OmniScanTab.SETTINGS,
+                        onClick = {
+                            if (currentTab != OmniScanTab.SETTINGS) {
+                                currentTab = OmniScanTab.SETTINGS
+                                onUserAction()
+                            }
+                        },
+                        icon = { Icon(Icons.Default.Settings, contentDescription = stringResource(R.string.tab_settings)) },
+                        label = { Text(stringResource(R.string.tab_settings)) },
+                        modifier = Modifier.testTag("nav_tab_settings")
+                    )
+                }
             }
         }
     ) { innerPadding ->
@@ -181,7 +215,11 @@ fun MainAppScreen(
                 HistoryScreen(
                     viewModel = viewModel,
                     isDark = isDark,
-                    onSelectItem = { item -> viewModel.showScanResult(item) },
+                    onSelectItem = { item ->
+                        viewModel.showScanResult(item)
+                        onUserAction()
+                    },
+                    onUserTouch = onUserAction,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -189,6 +227,7 @@ fun MainAppScreen(
                 GeneratorScreen(
                     viewModel = viewModel,
                     isDark = isDark,
+                    onUserTouch = onUserAction,
                     modifier = Modifier.padding(innerPadding)
                 )
             }

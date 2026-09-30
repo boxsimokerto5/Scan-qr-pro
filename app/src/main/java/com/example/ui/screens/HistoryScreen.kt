@@ -81,6 +81,7 @@ fun HistoryScreen(
     viewModel: ScannerViewModel,
     isDark: Boolean = false,
     onSelectItem: (ScanItemEntity) -> Unit,
+    onUserTouch: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -175,14 +176,20 @@ fun HistoryScreen(
             item {
                 FilterChip(
                     selected = selectedFilter == ScanFilterCategory.ALL,
-                    onClick = { viewModel.setFilterCategory(ScanFilterCategory.ALL) },
+                    onClick = {
+                        viewModel.setFilterCategory(ScanFilterCategory.ALL)
+                        onUserTouch()
+                    },
                     label = { Text("Semua") }
                 )
             }
             item {
                 FilterChip(
                     selected = selectedFilter == ScanFilterCategory.URL,
-                    onClick = { viewModel.setFilterCategory(ScanFilterCategory.URL) },
+                    onClick = {
+                        viewModel.setFilterCategory(ScanFilterCategory.URL)
+                        onUserTouch()
+                    },
                     label = { Text("Link / URL") },
                     leadingIcon = { Icon(Icons.Default.Language, contentDescription = null, modifier = Modifier.size(16.dp)) }
                 )
@@ -190,7 +197,10 @@ fun HistoryScreen(
             item {
                 FilterChip(
                     selected = selectedFilter == ScanFilterCategory.TEXT,
-                    onClick = { viewModel.setFilterCategory(ScanFilterCategory.TEXT) },
+                    onClick = {
+                        viewModel.setFilterCategory(ScanFilterCategory.TEXT)
+                        onUserTouch()
+                    },
                     label = { Text("Teks") },
                     leadingIcon = { Icon(Icons.Default.TextFields, contentDescription = null, modifier = Modifier.size(16.dp)) }
                 )
@@ -198,7 +208,10 @@ fun HistoryScreen(
             item {
                 FilterChip(
                     selected = selectedFilter == ScanFilterCategory.PRODUCT,
-                    onClick = { viewModel.setFilterCategory(ScanFilterCategory.PRODUCT) },
+                    onClick = {
+                        viewModel.setFilterCategory(ScanFilterCategory.PRODUCT)
+                        onUserTouch()
+                    },
                     label = { Text("Produk") },
                     leadingIcon = { Icon(Icons.Default.ShoppingBag, contentDescription = null, modifier = Modifier.size(16.dp)) }
                 )
@@ -206,7 +219,10 @@ fun HistoryScreen(
             item {
                 FilterChip(
                     selected = selectedFilter == ScanFilterCategory.FAVORITES,
-                    onClick = { viewModel.setFilterCategory(ScanFilterCategory.FAVORITES) },
+                    onClick = {
+                        viewModel.setFilterCategory(ScanFilterCategory.FAVORITES)
+                        onUserTouch()
+                    },
                     label = { Text("Favorit") },
                     leadingIcon = { Icon(Icons.Default.Bookmark, contentDescription = null, modifier = Modifier.size(16.dp)) }
                 )
@@ -272,26 +288,31 @@ fun HistoryScreen(
                 items(items, key = { it.id }) { item ->
                     HistoryItemCard(
                         item = item,
-                        onClick = { onSelectItem(item) },
-                        onToggleFavorite = { viewModel.toggleFavorite(item) },
+                        onClick = {
+                            onSelectItem(item)
+                            onUserTouch()
+                        },
+                        onToggleFavorite = {
+                            viewModel.toggleFavorite(item)
+                            onUserTouch()
+                        },
                         onDeleteItem = { viewModel.deleteScan(item) },
                         onCopyText = {
                             BarcodeUtils.copyToClipboard(context, item.rawValue, showToast = true)
+                            onUserTouch()
                         },
                         onOpenBrowser = {
                             BarcodeUtils.openInBrowser(context, item.rawValue)
+                            onUserTouch()
                         },
                         onSendWhatsApp = {
                             BarcodeUtils.openWhatsApp(context, item.rawValue)
+                            onUserTouch()
                         }
                     )
                 }
             }
         }
-
-        // ironSource & Pangle Banner Ad
-        com.example.ads.IronSourceBanner()
-        Spacer(modifier = Modifier.height(70.dp))
     }
 
     // Confirmation dialog for clearing all history

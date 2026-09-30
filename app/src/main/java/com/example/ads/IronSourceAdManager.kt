@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -199,21 +200,29 @@ object IronSourceAdManager {
     }
 
     /**
-     * Increments the user action counter.
-     * Every 5 actions (scans, clicks, item views), displays an Interstitial Ad.
+     * Increments the user touch/action counter.
+     * Accurately tracks every touch action (threshold = 5).
+     * Preloads automatically to guarantee the interstitial is ready on the 5th touch.
      */
     fun recordActionAndCheckInterstitial(activity: Activity, threshold: Int = 5) {
         val count = actionCounter.incrementAndGet()
-        Log.d(TAG, "Action recorded: $count / $threshold")
+        Log.d(TAG, "Sentuhan aksi pengguna: #$count dari $threshold")
+
+        // Actively preload interstitial so it is 100% ready when count hits 5
+        if (!IronSource.isInterstitialReady()) {
+            try {
+                IronSource.loadInterstitial()
+            } catch (_: Exception) {}
+        }
 
         if (count >= threshold) {
             actionCounter.set(0)
             try {
                 if (IronSource.isInterstitialReady()) {
-                    Log.d(TAG, "Displaying Interstitial ad after $threshold actions")
+                    Log.d(TAG, "Menampilkan iklan Interstitial tepat di sentuhan ke-$threshold!")
                     IronSource.showInterstitial()
                 } else {
-                    Log.d(TAG, "Interstitial ad not ready yet, loading for next cycle")
+                    Log.d(TAG, "Interstitial sedang dimuat di sentuhan ke-$threshold, memuat ulang...")
                     IronSource.loadInterstitial()
                 }
             } catch (e: Exception) {
@@ -236,8 +245,8 @@ object IronSourceAdManager {
 }
 
 /**
- * Clean Composable that embeds an ironSource Banner (320x50).
- * Handles creation, listener, and lifecycle destruction safely.
+ * Docked ironSource & Pangle Banner Composable (320x50 standard).
+ * Sits seamlessly flush right above the Bottom Navigation Bar without awkward gaps.
  */
 @Composable
 fun IronSourceBanner(
@@ -283,62 +292,33 @@ fun IronSourceBanner(
         }
     }
 
-    Box(
+    Surface(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        contentAlignment = Alignment.Center
+            .height(52.dp),
+        color = MaterialTheme.colorScheme.surface,
+        tonalElevation = 2.dp
     ) {
-        if (bannerLayout != null) {
-            AndroidView(
-                factory = { bannerLayout!! },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .testTag("ironsource_banner_view")
-            )
-        } else {
-            // Elegant placeholder card while banner connects or in test environment
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .padding(horizontal = 16.dp),
-                shape = RoundedCornerShape(8.dp),
-                color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            ) {
-                Row(
-                    modifier = Modifier.padding(horizontal = 12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Surface(
-                            shape = RoundedCornerShape(4.dp),
-                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
-                            modifier = Modifier.padding(end = 8.dp)
-                        ) {
-                            Text(
-                                text = "IKLAN",
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = MaterialTheme.colorScheme.primary,
-                                modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (bannerLayout != null) {
+                AndroidView(
+                    factory = {
+                        bannerLayout!!.apply {
+                            layoutParams = android.widget.FrameLayout.LayoutParams(
+                                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                                android.widget.FrameLayout.LayoutParams.WRAP_CONTENT,
+                                android.view.Gravity.CENTER
                             )
                         }
-                        Text(
-                            text = "Scan Qr Pro • ironSource & Pangle Active",
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
-                    Icon(
-                        imageVector = Icons.Default.OpenInNew,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                        .testTag("ironsource_banner_view")
+                )
             }
         }
     }

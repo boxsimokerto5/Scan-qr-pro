@@ -89,6 +89,7 @@ enum class GeneratorType {
 fun GeneratorScreen(
     viewModel: ScannerViewModel,
     isDark: Boolean = false,
+    onUserTouch: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -190,25 +191,37 @@ fun GeneratorScreen(
         ) {
             FilterChip(
                 selected = selectedType == GeneratorType.TEXT,
-                onClick = { selectedType = GeneratorType.TEXT },
+                onClick = {
+                    selectedType = GeneratorType.TEXT
+                    onUserTouch()
+                },
                 label = { Text("Teks") },
                 leadingIcon = { Icon(Icons.Default.TextFields, contentDescription = null, modifier = Modifier.size(16.dp)) }
             )
             FilterChip(
                 selected = selectedType == GeneratorType.URL,
-                onClick = { selectedType = GeneratorType.URL },
+                onClick = {
+                    selectedType = GeneratorType.URL
+                    onUserTouch()
+                },
                 label = { Text("Tautan URL") },
                 leadingIcon = { Icon(Icons.Default.Language, contentDescription = null, modifier = Modifier.size(16.dp)) }
             )
             FilterChip(
                 selected = selectedType == GeneratorType.WHATSAPP,
-                onClick = { selectedType = GeneratorType.WHATSAPP },
+                onClick = {
+                    selectedType = GeneratorType.WHATSAPP
+                    onUserTouch()
+                },
                 label = { Text("WhatsApp Link") },
                 leadingIcon = { Icon(Icons.Default.Chat, contentDescription = null, modifier = Modifier.size(16.dp)) }
             )
             FilterChip(
                 selected = selectedType == GeneratorType.WIFI,
-                onClick = { selectedType = GeneratorType.WIFI },
+                onClick = {
+                    selectedType = GeneratorType.WIFI
+                    onUserTouch()
+                },
                 label = { Text("Wi-Fi") },
                 leadingIcon = { Icon(Icons.Default.Wifi, contentDescription = null, modifier = Modifier.size(16.dp)) }
             )
@@ -660,12 +673,7 @@ fun GeneratorScreen(
                 }
             }
         }
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-
-        // ironSource & Pangle Banner Ad
-        com.example.ads.IronSourceBanner()
-
-        Spacer(modifier = Modifier.height(80.dp))
     }
 }
