@@ -1,0 +1,6 @@
+{
+  "name": "Scan Qr Pro",
+  "description": "Pemindai Barcode & QR Code serbaguna dengan riwayat lokal, download gambar QR code, aksi cepat WhatsApp dan browser, auto-copy ke clipboard, dan landing page hasil yang bersih.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
