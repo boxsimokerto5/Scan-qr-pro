@@ -217,7 +217,8 @@ fun HistoryScreen(
         if (items.isEmpty()) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .weight(1f)
+                    .fillMaxWidth()
                     .padding(32.dp),
                 contentAlignment = Alignment.Center
             ) {
@@ -255,11 +256,19 @@ fun HistoryScreen(
         } else {
             LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .weight(1f)
+                    .fillMaxWidth()
                     .testTag("history_list"),
-                contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 80.dp),
+                contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
+                // Native Ad Card inside History List
+                item(key = "native_ad_item") {
+                    com.example.ads.IronSourceNativeAdCard(
+                        modifier = Modifier.padding(horizontal = 0.dp)
+                    )
+                }
+
                 items(items, key = { it.id }) { item ->
                     HistoryItemCard(
                         item = item,
@@ -279,6 +288,10 @@ fun HistoryScreen(
                 }
             }
         }
+
+        // ironSource & Pangle Banner Ad
+        com.example.ads.IronSourceBanner()
+        Spacer(modifier = Modifier.height(70.dp))
     }
 
     // Confirmation dialog for clearing all history

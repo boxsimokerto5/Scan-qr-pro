@@ -56,6 +56,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        com.example.ads.IronSourceAdManager.init(this)
+
         setContent {
             val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
             val systemDark = isSystemInDarkTheme()
@@ -66,16 +68,33 @@ class MainActivity : ComponentActivity() {
             }
 
             ScanQrProTheme(darkTheme = isDark) {
-                MainAppScreen(viewModel = viewModel, isDark = isDark)
+                MainAppScreen(
+                    viewModel = viewModel,
+                    isDark = isDark,
+                    onUserAction = {
+                        com.example.ads.IronSourceAdManager.recordActionAndCheckInterstitial(this, threshold = 5)
+                    }
+                )
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        com.example.ads.IronSourceAdManager.onResume(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        com.example.ads.IronSourceAdManager.onPause(this)
     }
 }
 
 @Composable
 fun MainAppScreen(
     viewModel: ScannerViewModel,
-    isDark: Boolean
+    isDark: Boolean,
+    onUserAction: () -> Unit = {}
 ) {
     val context = LocalContext.current
     var currentTab by remember { mutableStateOf(OmniScanTab.SCAN) }
@@ -102,6 +121,13 @@ fun MainAppScreen(
     // Handle back button: return to SCAN tab if on another tab
     BackHandler(enabled = currentTab != OmniScanTab.SCAN) {
         currentTab = OmniScanTab.SCAN
+    }
+
+    // Trigger interstitial action check every time a scan result is viewed
+    LaunchedEffect(activeScanResult) {
+        if (activeScanResult != null) {
+            onUserAction()
+        }
     }
 
     Scaffold(

@@ -85,6 +85,16 @@ dependencies {
   implementation(libs.androidx.camera.view)
   implementation(libs.mlkit.barcode.scanning)
   implementation(libs.zxing.core)
+  
+  // ironSource Mediation SDK & Google Play Ads Identifiers
+  implementation("com.ironsource.sdk:mediationsdk:8.6.0")
+  implementation("com.google.android.gms:play-services-ads-identifier:18.2.0")
+  implementation("com.google.android.gms:play-services-appset:16.1.0")
+
+  // Pangle Mediation Adapter
+  implementation("com.ironsource.adapters:pangleadapter:4.3.43")
+  implementation("com.pangle.global:ads-sdk:6.4.0.6")
+
   implementation(libs.androidx.compose.material.icons.core)
   implementation(libs.androidx.compose.material.icons.extended)
   implementation(libs.androidx.compose.material3)

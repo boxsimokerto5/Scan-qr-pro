@@ -518,15 +518,26 @@ fun GeneratorScreen(
 
                     Spacer(modifier = Modifier.height(18.dp))
 
-                    // Prominent Download QR Button
+                    // Prominent Download QR Button (Rewarded Ad enabled)
                     Button(
                         onClick = {
-                            val success = BarcodeUtils.saveQrCodeToGallery(context, generatedBitmap)
-                            if (success) {
-                                isDownloaded = true
-                                Toast.makeText(context, context.getString(R.string.download_success), Toast.LENGTH_LONG).show()
+                            val activity = context as? android.app.Activity
+                            val doDownload = {
+                                val success = BarcodeUtils.saveQrCodeToGallery(context, generatedBitmap)
+                                if (success) {
+                                    isDownloaded = true
+                                    Toast.makeText(context, context.getString(R.string.download_success), Toast.LENGTH_LONG).show()
+                                } else {
+                                    Toast.makeText(context, context.getString(R.string.download_failed), Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            if (activity != null) {
+                                com.example.ads.IronSourceAdManager.showRewardedAdForDownload(activity) {
+                                    doDownload()
+                                }
                             } else {
-                                Toast.makeText(context, context.getString(R.string.download_failed), Toast.LENGTH_SHORT).show()
+                                doDownload()
                             }
                         },
                         modifier = Modifier
@@ -649,6 +660,11 @@ fun GeneratorScreen(
                 }
             }
         }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // ironSource & Pangle Banner Ad
+        com.example.ads.IronSourceBanner()
 
         Spacer(modifier = Modifier.height(80.dp))
     }
