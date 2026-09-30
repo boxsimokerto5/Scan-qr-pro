@@ -25,6 +25,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
+      - name: Ensure Gradle Wrapper Exists & Executable
+        run: |
+          if [ ! -f "gradlew" ]; then
+            echo "gradlew not found, generating Gradle wrapper..."
+            gradle wrapper || true
+          fi
+          chmod +x gradlew || true
+
       - name: Prepare Release Signing Keystore
         id: prepare_keystore
         run: |
@@ -63,16 +71,18 @@ jobs:
           echo "KEY_PASSWORD=$KEY_PASS" >> $GITHUB_ENV
           echo "KEY_ALIAS=$KEY_ALIAS" >> $GITHUB_ENV
 
-      - name: Grant Execute Permission for Gradle Wrapper
-        run: chmod +x gradlew || true
-
       - name: Build Release APK and Play Store AAB
         env:
           KEYSTORE_PATH: ${{ env.KEYSTORE_FILE }}
           STORE_PASSWORD: ${{ env.STORE_PASSWORD }}
           KEY_PASSWORD: ${{ env.KEY_PASSWORD }}
+          KEY_ALIAS: ${{ env.KEY_ALIAS }}
         run: |
-          ./gradlew assembleRelease bundleRelease --stacktrace
+          if [ -f "./gradlew" ]; then
+            ./gradlew assembleRelease bundleRelease --stacktrace
+          else
+            gradle assembleRelease bundleRelease --stacktrace
+          fi
 
       - name: Rename Output Artifacts
         run: |
@@ -83,7 +93,9 @@ jobs:
           if [ -f "app/build/outputs/bundle/release/app-release.aab" ]; then
             cp "app/build/outputs/bundle/release/app-release.aab" "build-artifacts/ScanQrPro-release.aab"
           fi
-          cp "$KEYSTORE_FILE" "build-artifacts/my-upload-key.jks"
+          if [ -f "$KEYSTORE_FILE" ]; then
+            cp "$KEYSTORE_FILE" "build-artifacts/my-upload-key.jks"
+          fi
 
       - name: Upload Play Store AAB (Android App Bundle)
         uses: actions/upload-artifact@v4
