@@ -1,8 +1,12 @@
 package com.example.ui.screens
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,21 +18,32 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.BrightnessAuto
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteForever
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.filled.PrivacyTip
+import androidx.compose.material.icons.filled.QrCodeScanner
 import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -44,12 +59,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.BuildConfig
 import com.example.data.preferences.AppThemeMode
 import com.example.ui.components.ThemeToggleButton
 import com.example.ui.theme.MoonIndigo
@@ -66,7 +85,10 @@ fun SettingsScreen(
     val autoCopyEnabled by viewModel.preferences.autoCopy.collectAsStateWithLifecycle()
     val vibrationEnabled by viewModel.preferences.vibration.collectAsStateWithLifecycle()
     val currentThemeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+
     var showClearDialog by remember { mutableStateOf(false) }
+    var showPrivacyDialog by remember { mutableStateOf(false) }
+    var showLicensesDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -75,6 +97,7 @@ fun SettingsScreen(
             .padding(horizontal = 20.dp, vertical = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        // Top Bar
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -88,7 +111,7 @@ fun SettingsScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Kustomisasi pemindaian dan preferensi perangkat",
+                    text = "Kustomisasi pemindaian, privasi, dan informasi aplikasi",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -102,7 +125,7 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Elegant Theme Selection Section
+        // 1. TEMA TAMPILAN
         Text(
             text = "TEMA TAMPILAN",
             style = MaterialTheme.typography.labelSmall,
@@ -218,7 +241,7 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Scan Preferences Section
+        // 2. PREFERENSI PEMINDAIAN
         Text(
             text = "PREFERENSI PEMINDAIAN",
             style = MaterialTheme.typography.labelSmall,
@@ -331,9 +354,9 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Data Storage & Privacy Section
+        // 3. PENYIMPANAN & PEMBERSIHAN DATA
         Text(
-            text = "PENYIMPANAN & PRIVASI",
+            text = "PENYIMPANAN DATA",
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
@@ -357,7 +380,7 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "100% Tersimpan di Lokal Perangkat",
+                        text = "100% Tersimpan di Perangkat Lokal",
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold
                     )
@@ -385,9 +408,132 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
+        // 4. TENTANG SCAN QR PRO (Google Play Store Ready)
+        Text(
+            text = "TENTANG SCAN QR PRO",
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Brand Profile Card
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+        ) {
+            Column(modifier = Modifier.padding(18.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Surface(
+                        shape = RoundedCornerShape(14.dp),
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(52.dp)
+                    ) {
+                        Box(contentAlignment = Alignment.Center) {
+                            Icon(
+                                imageVector = Icons.Default.QrCodeScanner,
+                                contentDescription = "Logo Scan Qr Pro",
+                                tint = MaterialTheme.colorScheme.onPrimary,
+                                modifier = Modifier.size(30.dp)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.width(14.dp))
+
+                    Column(modifier = Modifier.weight(1f)) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Text(
+                                text = "Scan Qr Pro",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Surface(
+                                shape = RoundedCornerShape(8.dp),
+                                color = MaterialTheme.colorScheme.primaryContainer
+                            ) {
+                                Text(
+                                    text = "v${BuildConfig.VERSION_NAME}",
+                                    fontSize = 11.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(2.dp))
+                        Text(
+                            text = "Pemindai & Pembuat Kode Cepat, Akurat, dan Aman",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+                HorizontalDivider(color = DividerDefaults.color.copy(alpha = 0.3f))
+                Spacer(modifier = Modifier.height(6.dp))
+
+                // Action Menu List
+                SettingActionRow(
+                    icon = Icons.Default.PrivacyTip,
+                    iconTint = MaterialTheme.colorScheme.primary,
+                    title = "Kebijakan Privasi (Privacy Policy)",
+                    subtitle = "Pelajari bagaimana data Anda dilindungi sepenuhnya",
+                    onClick = { showPrivacyDialog = true },
+                    testTag = "btn_privacy_policy"
+                )
+
+                SettingActionRow(
+                    icon = Icons.Default.StarRate,
+                    iconTint = Color(0xFFF59E0B),
+                    title = "Beri Rating di Google Play",
+                    subtitle = "Dukung pengembangan aplikasi dengan ulasan bintang 5",
+                    onClick = { openPlayStoreForRating(context) },
+                    testTag = "btn_rate_app"
+                )
+
+                SettingActionRow(
+                    icon = Icons.Default.Share,
+                    iconTint = Color(0xFF0284C7),
+                    title = "Bagikan Aplikasi",
+                    subtitle = "Rekomendasikan Scan Qr Pro kepada rekan & keluarga",
+                    onClick = { shareApp(context) },
+                    testTag = "btn_share_app"
+                )
+
+                SettingActionRow(
+                    icon = Icons.Default.Code,
+                    iconTint = Color(0xFF8B5CF6),
+                    title = "Lisensi Sumber Terbuka",
+                    subtitle = "Google ML Kit, ZXing, Jetpack Compose, Room",
+                    onClick = { showLicensesDialog = true },
+                    testTag = "btn_licenses"
+                )
+
+                SettingActionRow(
+                    icon = Icons.Default.Email,
+                    iconTint = Color(0xFF10B981),
+                    title = "Hubungi Dukungan / Pengembang",
+                    subtitle = "Kirim masukan atau laporan bug via email",
+                    onClick = { contactSupport(context) },
+                    testTag = "btn_contact"
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
         // Supported Barcode Formats Info
         Text(
-            text = "TENTANG FORMAT BARCODE",
+            text = "FORMAT BARCODE YANG DIDUKUNG",
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
@@ -405,11 +551,11 @@ fun SettingsScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Format yang Didukung:", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
+                    Text("Format Standar Internasional:", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "• 2D: QR Code, Data Matrix, Aztec, PDF-417\n• 1D Produk: EAN-13, EAN-8, UPC-A, UPC-E\n• 1D Industri: Code 128, Code 39, Code 93, Codabar, ITF",
+                    text = "• 2D Barcode: QR Code, Data Matrix, Aztec, PDF-417\n• 1D Produk Komersial: EAN-13, EAN-8, UPC-A, UPC-E\n• 1D Industri & Logistik: Code 128, Code 39, Code 93, Codabar, ITF",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     lineHeight = 20.sp
@@ -419,23 +565,30 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(
+        // Copyright footer
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(imageVector = Icons.Default.Info, contentDescription = null, modifier = Modifier.size(16.dp), tint = MaterialTheme.colorScheme.onSurfaceVariant)
-            Spacer(modifier = Modifier.width(6.dp))
             Text(
-                text = "Scan Qr Pro v1.0 • Scanner Cerdas & Cepat",
-                style = MaterialTheme.typography.labelSmall,
+                text = "Scan Qr Pro • Versi ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = "© 2026 Scan Qr Pro. Hak Cipta Dilindungi.",
+                style = MaterialTheme.typography.bodySmall,
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
             )
         }
 
         Spacer(modifier = Modifier.height(80.dp))
     }
 
+    // Dialog Hapus Riwayat
     if (showClearDialog) {
         AlertDialog(
             onDismissRequest = { showClearDialog = false },
@@ -458,5 +611,279 @@ fun SettingsScreen(
                 }
             }
         )
+    }
+
+    // Dialog Kebijakan Privasi Lengkap (In-App Privacy Policy)
+    if (showPrivacyDialog) {
+        AlertDialog(
+            onDismissRequest = { showPrivacyDialog = false },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.PrivacyTip,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+            },
+            title = {
+                Text(
+                    text = "Kebijakan Privasi Scan Qr Pro",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center
+                )
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(340.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = "Terakhir Diperbarui: 1 Oktober 2026\n",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    PrivacySection(
+                        number = "1",
+                        title = "Pemrosesan Kamera Secara Lokal (On-Device)",
+                        content = "Scan Qr Pro menggunakan izin kamera (CAMERA) hanya untuk memindai kode batang dan kode QR secara langsung. Gambar yang ditangkap oleh kamera dianalisis secara lokal menggunakan Google ML Kit dan tidak pernah direkam, disimpan, atau ditransmisikan ke server mana pun."
+                    )
+
+                    PrivacySection(
+                        number = "2",
+                        title = "Penyimpanan Riwayat Lokal",
+                        content = "Data hasil pemindaian dan pembuatan kode QR disimpan secara eksklusif dalam database lokal di perangkat Anda (SQLite Room). Kami tidak memiliki akses atau salinan data riwayat Anda. Anda dapat menghapus seluruh riwayat kapan saja melalui menu Pengaturan."
+                    )
+
+                    PrivacySection(
+                        number = "3",
+                        title = "Penyimpanan Galeri & Gambar",
+                        content = "Aplikasi hanya meminta akses untuk menyimpan berkas gambar kode QR yang Anda buat sendiri ke folder 'Pictures/ScanQrPro' di perangkat Anda."
+                    )
+
+                    PrivacySection(
+                        number = "4",
+                        title = "Jaringan Iklan Pihak Ketiga",
+                        content = "Untuk mendukung operasional aplikasi gratis ini, kami mengintegrasikan layanan periklanan (ironSource & Pangle). Layanan ini dapat mengumpulkan pengidentifikasi iklan perangkat (Google Advertising ID) sesuai kebijakan privasi Google Play."
+                    )
+
+                    PrivacySection(
+                        number = "5",
+                        title = "Kontak & Hak Pengguna",
+                        content = "Jika Anda memiliki pertanyaan mengenai kebijakan privasi ini, silakan hubungi kami melalui surel pengembang: waliasuhsrma24kediri@gmail.com."
+                    )
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showPrivacyDialog = false },
+                    shape = RoundedCornerShape(10.dp)
+                ) {
+                    Text("Saya Mengerti")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        openWebUrl(context, "https://sites.google.com/view/scan-qr-pro-privacy")
+                    }
+                ) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text("Buka Web")
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null, modifier = Modifier.size(14.dp))
+                    }
+                }
+            }
+        )
+    }
+
+    // Dialog Lisensi Sumber Terbuka
+    if (showLicensesDialog) {
+        AlertDialog(
+            onDismissRequest = { showLicensesDialog = false },
+            icon = {
+                Icon(Icons.Default.Code, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            },
+            title = {
+                Text("Lisensi Sumber Terbuka", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(260.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = "Scan Qr Pro dibangun menggunakan teknologi dan pustaka sumber terbuka terpercaya:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    LicenseItem("Google ML Kit Barcode Scanning", "Apache License 2.0 • Google LLC")
+                    LicenseItem("ZXing ('Zebra Crossing') Core", "Apache License 2.0 • ZXing Authors")
+                    LicenseItem("Android Jetpack & Compose", "Apache License 2.0 • Google LLC")
+                    LicenseItem("AndroidX Room Persistence Library", "Apache License 2.0 • Google LLC")
+                    LicenseItem("Kotlin & Coroutines", "Apache License 2.0 • JetBrains s.r.o.")
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLicensesDialog = false }) {
+                    Text("Tutup")
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun SettingActionRow(
+    icon: ImageVector,
+    iconTint: Color,
+    title: String,
+    subtitle: String,
+    onClick: () -> Unit,
+    testTag: String
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(12.dp))
+            .clickable(onClick = onClick)
+            .padding(vertical = 10.dp, horizontal = 4.dp)
+            .testTag(testTag),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Surface(
+            shape = CircleShape,
+            color = iconTint.copy(alpha = 0.12f),
+            modifier = Modifier.size(38.dp)
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = iconTint,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.width(14.dp))
+
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = subtitle,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                fontSize = 12.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun PrivacySection(number: String, title: String, content: String) {
+    Column(modifier = Modifier.padding(bottom = 12.dp)) {
+        Text(
+            text = "$number. $title",
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            lineHeight = 18.sp
+        )
+    }
+}
+
+@Composable
+private fun LicenseItem(name: String, license: String) {
+    Column(modifier = Modifier.padding(vertical = 6.dp)) {
+        Text(
+            text = name,
+            style = MaterialTheme.typography.bodyMedium,
+            fontWeight = FontWeight.SemiBold
+        )
+        Text(
+            text = license,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontSize = 11.sp
+        )
+    }
+}
+
+private fun openPlayStoreForRating(context: Context) {
+    val packageName = context.packageName
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+    } catch (_: Exception) {
+        try {
+            val webIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(webIntent)
+        } catch (_: Exception) {
+            Toast.makeText(context, "Google Play Store tidak tersedia di perangkat ini", Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+
+private fun shareApp(context: Context) {
+    val packageName = context.packageName
+    val shareIntent = Intent(Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(
+            Intent.EXTRA_SUBJECT,
+            "Scan Qr Pro - Pemindai Barcode & QR Cepat"
+        )
+        putExtra(
+            Intent.EXTRA_TEXT,
+            "Gunakan Scan Qr Pro untuk memindai dan membuat kode QR cepat dan aman dengan logo di tengah: https://play.google.com/store/apps/details?id=$packageName"
+        )
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    context.startActivity(Intent.createChooser(shareIntent, "Bagikan Scan Qr Pro via"))
+}
+
+private fun contactSupport(context: Context) {
+    val emailIntent = Intent(Intent.ACTION_SENDTO).apply {
+        data = Uri.parse("mailto:waliasuhsrma24kediri@gmail.com")
+        putExtra(Intent.EXTRA_SUBJECT, "Scan Qr Pro v${BuildConfig.VERSION_NAME} - Pertanyaan / Masukan")
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+    try {
+        context.startActivity(emailIntent)
+    } catch (_: Exception) {
+        Toast.makeText(context, "Aplikasi email tidak ditemukan. Hubungi: waliasuhsrma24kediri@gmail.com", Toast.LENGTH_LONG).show()
+    }
+}
+
+private fun openWebUrl(context: Context, url: String) {
+    try {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(intent)
+    } catch (_: Exception) {
+        Toast.makeText(context, "Tidak dapat membuka peramban web", Toast.LENGTH_SHORT).show()
     }
 }
