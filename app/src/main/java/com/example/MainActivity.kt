@@ -32,7 +32,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
+import java.util.Locale
+import android.content.res.Configuration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -63,6 +67,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+            val appLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
             val systemDark = isSystemInDarkTheme()
             val isDark = when (themeMode) {
                 AppThemeMode.DARK -> true
@@ -70,14 +75,32 @@ class MainActivity : ComponentActivity() {
                 AppThemeMode.SYSTEM -> systemDark
             }
 
-            ScanQrProTheme(darkTheme = isDark) {
-                MainAppScreen(
-                    viewModel = viewModel,
-                    isDark = isDark,
-                    onUserAction = {
-                        com.example.ads.IronSourceAdManager.recordActionAndCheckInterstitial(this, threshold = 5)
-                    }
-                )
+            val baseContext = LocalContext.current
+            val localizedContext = remember(appLanguage, baseContext) {
+                if (appLanguage == "SYSTEM") {
+                    baseContext
+                } else {
+                    val locale = Locale.forLanguageTag(appLanguage)
+                    val config = Configuration(baseContext.resources.configuration)
+                    config.setLocale(locale)
+                    config.setLayoutDirection(locale)
+                    baseContext.createConfigurationContext(config)
+                }
+            }
+
+            CompositionLocalProvider(
+                LocalContext provides localizedContext,
+                LocalConfiguration provides localizedContext.resources.configuration
+            ) {
+                ScanQrProTheme(darkTheme = isDark) {
+                    MainAppScreen(
+                        viewModel = viewModel,
+                        isDark = isDark,
+                        onUserAction = {
+                            com.example.ads.IronSourceAdManager.recordActionAndCheckInterstitial(this, threshold = 5)
+                        }
+                    )
+                }
             }
         }
     }

@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Scan Qr Pro</string>
+    <string name="tab_scan">Scanner</string>
+    <string name="tab_history">Historique</string>
+    <string name="tab_generate">Créer</string>
+    <string name="tab_settings">Paramètres</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">Scanner Code-barres &amp; QR</string>
+    <string name="scan_subtitle">Pointez la caméra vers un code-barres ou QR</string>
+    <string name="camera_permission_required">Autorisation Caméra Requise</string>
+    <string name="camera_permission_desc">Scan Qr Pro nécessite l\'accès à la caméra pour scanner les codes en direct.</string>
+    <string name="grant_permission">Accorder l\'autorisation</string>
+    <string name="flash_toggle">Lampe torche</string>
+    <string name="gallery_scan">Scanner une image</string>
+
+    <!-- Scan Results -->
+    <string name="scan_result_title">Résultat du Scan</string>
+    <string name="action_open_browser">Ouvrir dans le navigateur</string>
+    <string name="action_send_whatsapp">Envoyer sur WhatsApp</string>
+    <string name="action_copy">Copier le texte</string>
+    <string name="action_share">Partager</string>
+    <string name="action_download_qr">Télécharger le QR Code</string>
+    <string name="download_success">QR Code enregistré dans la galerie (Pictures/ScanQrPro)</string>
+    <string name="download_failed">Échec de l\'enregistrement du QR Code</string>
+    <string name="text_copied_toast">Copié dans le presse-papiers</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Historique des Scans</string>
+    <string name="history_empty">Aucun historique pour le moment</string>
+    <string name="history_empty_desc">Les codes scannés ou créés apparaîtront automatiquement ici.</string>
+    <string name="clear_history">Effacer tout l\'historique</string>
+    <string name="search_history_placeholder">Rechercher dans l\'historique...</string>
+    <string name="all_filter">Tous</string>
+
+    <!-- Generator Screen -->
+    <string name="gen_title">Créer QR &amp; Code-barres</string>
+    <string name="gen_subtitle">Générez des codes QR personnalisés à haute vitesse</string>
+    <string name="type_text">Texte</string>
+    <string name="type_url">URL de site web</string>
+    <string name="type_wa">WhatsApp</string>
+    <string name="type_wifi">Wi-Fi</string>
+    <string name="gen_input_text_label">Contenu texte</string>
+    <string name="gen_input_text_hint">Tapez le texte pour générer le code QR...</string>
+    <string name="gen_logo_title">Logo central dans le QR</string>
+    <string name="gen_logo_subtitle">Facultatif: intégrer une image ou icône au centre</string>
+    <string name="gen_logo_upload">Importer un logo</string>
+    <string name="gen_logo_change">Changer d\'image de logo</string>
+    <string name="gen_logo_active">Actif</string>
+    <string name="gen_logo_active_desc">Logo central intégré au QR code</string>
+    <string name="gen_qr_ready">QR Code Prêt</string>
+    <string name="gen_qr_ready_with_logo">QR Code Prêt • Logo Central Intégré</string>
+    <string name="gen_download_button">Télécharger dans la Galerie</string>
+    <string name="gen_downloaded">Enregistré dans la galerie (Pictures/ScanQrPro)</string>
+    <string name="gen_open_result">Ouvrir dans Résultats et Historique</string>
+    <string name="gen_empty_hint">Saisissez du contenu ci-dessus pour prévisualiser</string>
+    <string name="gen_logo_info" formatted="false">Utilise le niveau de correction H (30%) pour une lecture 100% rapide.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Paramètres</string>
+    <string name="settings_subtitle">Personnalisez le scan, la confidentialité et les réglages</string>
+    <string name="section_language">LANGUE DE L\'APPLICATION</string>
+    <string name="language_auto">Par défaut du système (Auto)</string>
+    <string name="section_theme">THÈME VISUEL</string>
+    <string name="theme_light">Clair</string>
+    <string name="theme_dark">Sombre</string>
+    <string name="theme_system">Système</string>
+    <string name="section_scan_pref">PRÉFÉRENCES DE SCAN</string>
+    <string name="auto_copy_setting">Copie automatique</string>
+    <string name="auto_copy_desc">Copie automatiquement le texte du code scanné</string>
+    <string name="vibrate_setting">Vibration haptique</string>
+    <string name="vibrate_desc">Légère vibration lorsqu\'un code est détecté</string>
+    <string name="section_storage">STOCKAGE DES DONNÉES</string>
+    <string name="storage_local_title">100% Stocké Localement</string>
+    <string name="storage_local_desc">Tout l\'historique est conservé en sécurité dans la base SQLite locale de votre appareil.</string>
+    <string name="btn_clear_history">Effacer toutes les données d\'historique</string>
+    <string name="section_about">À PROPOS DE SCAN QR PRO</string>
+    <string name="app_tagline">Scanner et Générateur Rapide, Précis et Respectueux de la Vie Privée</string>
+    <string name="privacy_policy_title">Politique de Confidentialité</string>
+    <string name="privacy_policy_subtitle">Découvrez comment vos données sont protégées</string>
+    <string name="rate_app_title">Évaluer sur Google Play</string>
+    <string name="rate_app_subtitle">Soutenez-nous avec 5 étoiles</string>
+    <string name="share_app_title">Partager l\'application</string>
+    <string name="share_app_subtitle">Recommandez Scan Qr Pro à vos amis</string>
+    <string name="licenses_title">Licences Open Source</string>
+    <string name="licenses_subtitle">Google ML Kit, ZXing, Jetpack Compose, Room</string>
+    <string name="contact_support_title">Contacter le support</string>
+    <string name="contact_support_subtitle">Envoyer des retours ou signaler un problème</string>
+    <string name="copyright_text">© 2026 Scan Qr Pro. Tous droits réservés.</string>
+</resources>

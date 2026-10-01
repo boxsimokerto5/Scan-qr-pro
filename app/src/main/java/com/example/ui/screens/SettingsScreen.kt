@@ -24,13 +24,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.BrightnessAuto
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.QrCodeScanner
@@ -47,6 +48,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -63,13 +65,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.BuildConfig
+import com.example.R
 import com.example.data.preferences.AppThemeMode
+import com.example.data.preferences.ScanPreferences
 import com.example.ui.components.ThemeToggleButton
 import com.example.ui.theme.MoonIndigo
 import com.example.ui.theme.SunGold
@@ -85,10 +90,17 @@ fun SettingsScreen(
     val autoCopyEnabled by viewModel.preferences.autoCopy.collectAsStateWithLifecycle()
     val vibrationEnabled by viewModel.preferences.vibration.collectAsStateWithLifecycle()
     val currentThemeMode by viewModel.themeMode.collectAsStateWithLifecycle()
+    val currentLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
 
     var showClearDialog by remember { mutableStateOf(false) }
     var showPrivacyDialog by remember { mutableStateOf(false) }
     var showLicensesDialog by remember { mutableStateOf(false) }
+    var showLanguageDialog by remember { mutableStateOf(false) }
+
+    val activeLangObj = remember(currentLanguage) {
+        ScanPreferences.AVAILABLE_LANGUAGES.find { it.code == currentLanguage }
+            ?: ScanPreferences.AVAILABLE_LANGUAGES.first()
+    }
 
     Column(
         modifier = modifier
@@ -105,13 +117,13 @@ fun SettingsScreen(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Pengaturan",
+                    text = stringResource(R.string.settings_title),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Kustomisasi pemindaian, privasi, dan informasi aplikasi",
+                    text = stringResource(R.string.settings_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -125,9 +137,101 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // 1. TEMA TAMPILAN
+        // 1. BAHASA APLIKASI (APP LANGUAGE)
         Text(
-            text = "TEMA TAMPILAN",
+            text = stringResource(R.string.section_language),
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 1.sp,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(16.dp))
+                .clickable { showLanguageDialog = true }
+                .testTag("language_selector_card"),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.primaryContainer,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.size(44.dp)
+                ) {
+                    Box(contentAlignment = Alignment.Center) {
+                        Icon(
+                            imageVector = Icons.Default.Language,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(14.dp))
+
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = activeLangObj.nativeName,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.width(6.dp))
+                        if (currentLanguage == "SYSTEM") {
+                            Surface(
+                                shape = RoundedCornerShape(6.dp),
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)
+                            ) {
+                                Text(
+                                    text = "176 Countries Auto",
+                                    fontSize = 10.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(2.dp))
+                    Text(
+                        text = if (currentLanguage == "SYSTEM") stringResource(R.string.language_auto) else activeLangObj.displayName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                    tonalElevation = 1.dp
+                ) {
+                    Text(
+                        text = "Ganti / Change",
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp)
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // 2. TEMA TAMPILAN
+        Text(
+            text = stringResource(R.string.section_theme),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
@@ -169,7 +273,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "Terang",
+                                text = stringResource(R.string.theme_light),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (currentThemeMode == AppThemeMode.LIGHT) FontWeight.Bold else FontWeight.Normal
                             )
@@ -199,7 +303,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "Gelap",
+                                text = stringResource(R.string.theme_dark),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (currentThemeMode == AppThemeMode.DARK) FontWeight.Bold else FontWeight.Normal
                             )
@@ -229,7 +333,7 @@ fun SettingsScreen(
                             )
                             Spacer(modifier = Modifier.height(6.dp))
                             Text(
-                                text = "Sistem",
+                                text = stringResource(R.string.theme_system),
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = if (currentThemeMode == AppThemeMode.SYSTEM) FontWeight.Bold else FontWeight.Normal
                             )
@@ -241,9 +345,9 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 2. PREFERENSI PEMINDAIAN
+        // 3. PREFERENSI PEMINDAIAN
         Text(
-            text = "PREFERENSI PEMINDAIAN",
+            text = stringResource(R.string.section_scan_pref),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
@@ -285,12 +389,12 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
-                                text = "Salin Otomatis ke Clipboard",
+                                text = stringResource(R.string.auto_copy_setting),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Text(
-                                text = "Teks barcode langsung tersalin ke papan klip saat berhasil dipindai",
+                                text = stringResource(R.string.auto_copy_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -332,12 +436,12 @@ fun SettingsScreen(
                         Spacer(modifier = Modifier.width(12.dp))
                         Column {
                             Text(
-                                text = "Getaran Haptik",
+                                text = stringResource(R.string.vibrate_setting),
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold
                             )
                             Text(
-                                text = "Getar halus saat barcode atau QR code terdeteksi",
+                                text = stringResource(R.string.vibrate_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
@@ -354,9 +458,9 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 3. PENYIMPANAN & PEMBERSIHAN DATA
+        // 4. PENYIMPANAN DATA & PRIVASI
         Text(
-            text = "PENYIMPANAN DATA",
+            text = stringResource(R.string.section_storage),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
@@ -380,14 +484,14 @@ fun SettingsScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "100% Tersimpan di Perangkat Lokal",
+                        text = stringResource(R.string.storage_local_title),
                         style = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = "Semua riwayat pemindaian disimpan secara aman dalam database SQLite Room lokal di ponsel Anda tanpa dikirim ke server luar.",
+                    text = stringResource(R.string.storage_local_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -401,16 +505,16 @@ fun SettingsScreen(
                 ) {
                     Icon(imageVector = Icons.Default.DeleteForever, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Bersihkan Semua Data Riwayat", color = MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.btn_clear_history), color = MaterialTheme.colorScheme.error)
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // 4. TENTANG SCAN QR PRO (Google Play Store Ready)
+        // 5. TENTANG SCAN QR PRO (Google Play Store Ready)
         Text(
-            text = "TENTANG SCAN QR PRO",
+            text = stringResource(R.string.section_about),
             style = MaterialTheme.typography.labelSmall,
             fontWeight = FontWeight.Bold,
             letterSpacing = 1.sp,
@@ -419,7 +523,6 @@ fun SettingsScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        // Brand Profile Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -470,7 +573,7 @@ fun SettingsScreen(
                         }
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "Pemindai & Pembuat Kode Cepat, Akurat, dan Aman",
+                            text = stringResource(R.string.app_tagline),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -485,8 +588,8 @@ fun SettingsScreen(
                 SettingActionRow(
                     icon = Icons.Default.PrivacyTip,
                     iconTint = MaterialTheme.colorScheme.primary,
-                    title = "Kebijakan Privasi (Privacy Policy)",
-                    subtitle = "Pelajari bagaimana data Anda dilindungi sepenuhnya",
+                    title = stringResource(R.string.privacy_policy_title),
+                    subtitle = stringResource(R.string.privacy_policy_subtitle),
                     onClick = { showPrivacyDialog = true },
                     testTag = "btn_privacy_policy"
                 )
@@ -494,8 +597,8 @@ fun SettingsScreen(
                 SettingActionRow(
                     icon = Icons.Default.StarRate,
                     iconTint = Color(0xFFF59E0B),
-                    title = "Beri Rating di Google Play",
-                    subtitle = "Dukung pengembangan aplikasi dengan ulasan bintang 5",
+                    title = stringResource(R.string.rate_app_title),
+                    subtitle = stringResource(R.string.rate_app_subtitle),
                     onClick = { openPlayStoreForRating(context) },
                     testTag = "btn_rate_app"
                 )
@@ -503,8 +606,8 @@ fun SettingsScreen(
                 SettingActionRow(
                     icon = Icons.Default.Share,
                     iconTint = Color(0xFF0284C7),
-                    title = "Bagikan Aplikasi",
-                    subtitle = "Rekomendasikan Scan Qr Pro kepada rekan & keluarga",
+                    title = stringResource(R.string.share_app_title),
+                    subtitle = stringResource(R.string.share_app_subtitle),
                     onClick = { shareApp(context) },
                     testTag = "btn_share_app"
                 )
@@ -512,8 +615,8 @@ fun SettingsScreen(
                 SettingActionRow(
                     icon = Icons.Default.Code,
                     iconTint = Color(0xFF8B5CF6),
-                    title = "Lisensi Sumber Terbuka",
-                    subtitle = "Google ML Kit, ZXing, Jetpack Compose, Room",
+                    title = stringResource(R.string.licenses_title),
+                    subtitle = stringResource(R.string.licenses_subtitle),
                     onClick = { showLicensesDialog = true },
                     testTag = "btn_licenses"
                 )
@@ -521,44 +624,10 @@ fun SettingsScreen(
                 SettingActionRow(
                     icon = Icons.Default.Email,
                     iconTint = Color(0xFF10B981),
-                    title = "Hubungi Dukungan / Pengembang",
-                    subtitle = "Kirim masukan atau laporan bug via email",
+                    title = stringResource(R.string.contact_support_title),
+                    subtitle = stringResource(R.string.contact_support_subtitle),
                     onClick = { contactSupport(context) },
                     testTag = "btn_contact"
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Supported Barcode Formats Info
-        Text(
-            text = "FORMAT BARCODE YANG DIDUKUNG",
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 1.sp,
-            color = MaterialTheme.colorScheme.primary
-        )
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Default.CheckCircle, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Format Standar Internasional:", fontWeight = FontWeight.SemiBold, style = MaterialTheme.typography.bodyMedium)
-                }
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "• 2D Barcode: QR Code, Data Matrix, Aztec, PDF-417\n• 1D Produk Komersial: EAN-13, EAN-8, UPC-A, UPC-E\n• 1D Industri & Logistik: Code 128, Code 39, Code 93, Codabar, ITF",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 20.sp
                 )
             }
         }
@@ -571,14 +640,14 @@ fun SettingsScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Scan Qr Pro • Versi ${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
+                text = "Scan Qr Pro • v${BuildConfig.VERSION_NAME} (Build ${BuildConfig.VERSION_CODE})",
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             Spacer(modifier = Modifier.height(2.dp))
             Text(
-                text = "© 2026 Scan Qr Pro. Hak Cipta Dilindungi.",
+                text = stringResource(R.string.copyright_text),
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 11.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
@@ -586,6 +655,96 @@ fun SettingsScreen(
         }
 
         Spacer(modifier = Modifier.height(80.dp))
+    }
+
+    // Dialog Pemilihan Bahasa (Language Selection Dialog)
+    if (showLanguageDialog) {
+        AlertDialog(
+            onDismissRequest = { showLanguageDialog = false },
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Language,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(28.dp)
+                )
+            },
+            title = {
+                Text(
+                    text = "Pilih Bahasa / Select Language",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center
+                )
+            },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(340.dp)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    Text(
+                        text = "Aplikasi otomatis mengikuti bahasa perangkat di 176 negara, atau pilih bahasa yang Anda sukai:",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 12.sp,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+
+                    ScanPreferences.AVAILABLE_LANGUAGES.forEach { lang ->
+                        val isSelected = currentLanguage == lang.code
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(10.dp))
+                                .clickable {
+                                    viewModel.setAppLanguage(lang.code)
+                                    showLanguageDialog = false
+                                }
+                                .padding(vertical = 8.dp, horizontal = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            RadioButton(
+                                selected = isSelected,
+                                onClick = {
+                                    viewModel.setAppLanguage(lang.code)
+                                    showLanguageDialog = false
+                                }
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = lang.nativeName,
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Medium,
+                                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = lang.displayName,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontSize = 11.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageDialog = false }) {
+                    Text("Tutup / Close")
+                }
+            }
+        )
     }
 
     // Dialog Hapus Riwayat
@@ -853,11 +1012,11 @@ private fun shareApp(context: Context) {
         type = "text/plain"
         putExtra(
             Intent.EXTRA_SUBJECT,
-            "Scan Qr Pro - Pemindai Barcode & QR Cepat"
+            "Scan Qr Pro"
         )
         putExtra(
             Intent.EXTRA_TEXT,
-            "Gunakan Scan Qr Pro untuk memindai dan membuat kode QR cepat dan aman dengan logo di tengah: https://play.google.com/store/apps/details?id=$packageName"
+            "Scan Qr Pro: https://play.google.com/store/apps/details?id=$packageName"
         )
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }

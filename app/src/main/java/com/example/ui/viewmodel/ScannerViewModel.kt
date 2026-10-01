@@ -129,6 +129,12 @@ class ScannerViewModel(application: Application) : AndroidViewModel(application)
         preferences.setBeepSound(enabled)
     }
 
+    val appLanguage: StateFlow<String> = preferences.appLanguage
+
+    fun setAppLanguage(langCode: String) {
+        preferences.setAppLanguage(langCode)
+    }
+
     val themeMode = preferences.themeMode
 
     fun setThemeMode(mode: com.example.data.preferences.AppThemeMode) {

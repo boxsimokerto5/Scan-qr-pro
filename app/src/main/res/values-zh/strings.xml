@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Scan Qr Pro</string>
+    <string name="tab_scan">扫描</string>
+    <string name="tab_history">历史</string>
+    <string name="tab_generate">生成</string>
+    <string name="tab_settings">设置</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">条形码与二维码扫描器</string>
+    <string name="scan_subtitle">将摄像头对准任意条形码或二维码</string>
+    <string name="camera_permission_required">需要相机权限</string>
+    <string name="camera_permission_desc">Scan Qr Pro 需要相机访问权限来实时扫描代码。</string>
+    <string name="grant_permission">授予权限</string>
+    <string name="flash_toggle">手电筒</string>
+    <string name="gallery_scan">扫描图片</string>
+
+    <!-- Scan Results -->
+    <string name="scan_result_title">扫描结果</string>
+    <string name="action_open_browser">在浏览器中打开</string>
+    <string name="action_send_whatsapp">通过 WhatsApp 发送</string>
+    <string name="action_copy">复制文本</string>
+    <string name="action_share">分享</string>
+    <string name="action_download_qr">下载二维码</string>
+    <string name="download_success">二维码已保存至相册 (Pictures/ScanQrPro)</string>
+    <string name="download_failed">保存二维码图片失败</string>
+    <string name="text_copied_toast">已复制到剪贴板</string>
+
+    <!-- History Screen -->
+    <string name="history_title">扫描历史记录</string>
+    <string name="history_empty">暂无历史记录</string>
+    <string name="history_empty_desc">扫描或生成的代码将自动显示在此处。</string>
+    <string name="clear_history">清除所有历史记录</string>
+    <string name="search_history_placeholder">搜索历史记录...</string>
+    <string name="all_filter">全部</string>
+
+    <!-- Generator Screen -->
+    <string name="gen_title">创建二维码与条形码</string>
+    <string name="gen_subtitle">极速生成个性化二维码</string>
+    <string name="type_text">文本</string>
+    <string name="type_url">网页链接</string>
+    <string name="type_wa">WhatsApp</string>
+    <string name="type_wifi">Wi-Fi</string>
+    <string name="gen_input_text_label">内容文本</string>
+    <string name="gen_input_text_hint">输入内容以生成二维码...</string>
+    <string name="gen_logo_title">二维码中心图标</string>
+    <string name="gen_logo_subtitle">可选：在中心嵌入图片或图标</string>
+    <string name="gen_logo_upload">从相册上传图标</string>
+    <string name="gen_logo_change">更改图标</string>
+    <string name="gen_logo_active">已启用</string>
+    <string name="gen_logo_active_desc">中心图标已嵌入二维码中</string>
+    <string name="gen_qr_ready">二维码已就绪</string>
+    <string name="gen_qr_ready_with_logo">二维码已就绪 • 中心图标已嵌入</string>
+    <string name="gen_download_button">下载二维码至相册</string>
+    <string name="gen_downloaded">已保存至相册 (Pictures/ScanQrPro)</string>
+    <string name="gen_open_result">在结果与历史中打开</string>
+    <string name="gen_empty_hint">在上方输入内容以实时预览二维码</string>
+    <string name="gen_logo_info" formatted="false">采用 H 级容错（30%），确保所有扫描器闪电识别。</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">设置</string>
+    <string name="settings_subtitle">自定义扫描、隐私及应用偏好</string>
+    <string name="section_language">应用语言</string>
+    <string name="language_auto">跟随系统（自动）</string>
+    <string name="section_theme">显示主题</string>
+    <string name="theme_light">浅色</string>
+    <string name="theme_dark">深色</string>
+    <string name="theme_system">系统默认</string>
+    <string name="section_scan_pref">扫描偏好</string>
+    <string name="auto_copy_setting">自动复制到剪贴板</string>
+    <string name="auto_copy_desc">扫描成功后自动复制文本</string>
+    <string name="vibrate_setting">触觉振动</string>
+    <string name="vibrate_desc">识别到代码时轻微振动反馈</string>
+    <string name="section_storage">数据存储</string>
+    <string name="storage_local_title">100% 本地设备安全存储</string>
+    <string name="storage_local_desc">所有扫描历史安全保存在您设备的本地 SQLite 数据库中，绝不上传到任何服务器。</string>
+    <string name="btn_clear_history">清除全部历史数据</string>
+    <string name="section_about">关于 SCAN QR PRO</string>
+    <string name="app_tagline">快速、精准、注重隐私的代码扫描与生成利器</string>
+    <string name="privacy_policy_title">隐私政策</string>
+    <string name="privacy_policy_subtitle">了解我们如何全面保护您的数据安全</string>
+    <string name="rate_app_title">在 Google Play 上评价</string>
+    <string name="rate_app_subtitle">五星好评支持我们的持续开发</string>
+    <string name="share_app_title">分享应用</string>
+    <string name="share_app_subtitle">推荐 Scan Qr Pro 给朋友和家人</string>
+    <string name="licenses_title">开源许可</string>
+    <string name="licenses_subtitle">Google ML Kit, ZXing, Jetpack Compose, Room</string>
+    <string name="contact_support_title">联系支持 / 开发者</string>
+    <string name="contact_support_subtitle">通过电子邮件发送反馈或建议</string>
+    <string name="copyright_text">© 2026 Scan Qr Pro. 保留所有权利。</string>
+</resources>

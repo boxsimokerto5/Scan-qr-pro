@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Scan Qr Pro</string>
+    <string name="tab_scan">स्कैन</string>
+    <string name="tab_history">इतिहास</string>
+    <string name="tab_generate">बनाएं</string>
+    <string name="tab_settings">सेटिंग्स</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">बारकोड और क्यूआर स्कैनर</string>
+    <string name="scan_subtitle">किसी भी बारकोड या क्यूआर कोड पर कैमरा केंद्रित करें</string>
+    <string name="camera_permission_required">कैमरा अनुमति आवश्यक है</string>
+    <string name="camera_permission_desc">रियल-टाइम स्कैनिंग के लिए कैमरा अनुमति की आवश्यकता है।</string>
+    <string name="grant_permission">अनुमति दें</string>
+    <string name="flash_toggle">फ्लैशलाइट</string>
+    <string name="gallery_scan">गैलरी से स्कैन करें</string>
+
+    <!-- Scan Results -->
+    <string name="scan_result_title">स्कैन परिणाम</string>
+    <string name="action_open_browser">ब्राउज़र में खोलें</string>
+    <string name="action_send_whatsapp">व्हाट्सएप पर भेजें</string>
+    <string name="action_copy">टेक्स्ट कॉपी करें</string>
+    <string name="action_share">शेयर करें</string>
+    <string name="action_download_qr">क्यूआर कोड डाउनलोड करें</string>
+    <string name="download_success">क्यूआर कोड गैलरी में सहेजा गया (Pictures/ScanQrPro)</string>
+    <string name="download_failed">क्यूआर कोड सहेजने में विफल</string>
+    <string name="text_copied_toast">क्लिपबोर्ड पर कॉपी किया गया</string>
+
+    <!-- History Screen -->
+    <string name="history_title">स्कैन इतिहास</string>
+    <string name="history_empty">अभी कोई इतिहास नहीं है</string>
+    <string name="history_empty_desc">स्कैन या बनाए गए कोड यहां स्वचालित रूप से दिखाई देंगे।</string>
+    <string name="clear_history">सारा इतिहास साफ़ करें</string>
+    <string name="search_history_placeholder">इतिहास खोजें...</string>
+    <string name="all_filter">सभी</string>
+
+    <!-- Generator Screen -->
+    <string name="gen_title">क्यूआर और बारकोड बनाएं</string>
+    <string name="gen_subtitle">तेज़ गति से कस्टम क्यूआर कोड जनरेट करें</string>
+    <string name="type_text">टेक्स्ट</string>
+    <string name="type_url">वेबसाइट URL</string>
+    <string name="type_wa">व्हाट्सएप</string>
+    <string name="type_wifi">वाई-फ़ाई</string>
+    <string name="gen_input_text_label">सामग्री टेक्स्ट</string>
+    <string name="gen_input_text_hint">क्यूआर कोड बनाने के लिए टेक्स्ट दर्ज करें...</string>
+    <string name="gen_logo_title">क्यूआर में केंद्र लोगो</string>
+    <string name="gen_logo_subtitle">वैकल्पिक: केंद्र में छवि या आइकन जोड़ें</string>
+    <string name="gen_logo_upload">गैलरी से लोगो अपलोड करें</string>
+    <string name="gen_logo_change">लोगो बदलें</string>
+    <string name="gen_logo_active">सक्रिय</string>
+    <string name="gen_logo_active_desc">केंद्र लोगो क्यूआर कोड में एम्बेडेड है</string>
+    <string name="gen_qr_ready">क्यूआर कोड तैयार है</string>
+    <string name="gen_qr_ready_with_logo">क्यूआर कोड तैयार है • केंद्र लोगो एम्बेडेड</string>
+    <string name="gen_download_button">गैलरी में डाउनलोड करें</string>
+    <string name="gen_downloaded">गैलरी में सहेजा गया (Pictures/ScanQrPro)</string>
+    <string name="gen_open_result">परिणाम और इतिहास में खोलें</string>
+    <string name="gen_empty_hint">लाइव पूर्वावलोकन देखने के लिए सामग्री दर्ज करें</string>
+    <string name="gen_logo_info" formatted="false">त्रुटि सुधार स्तर H (30%) का उपयोग करता है जिससे यह 100% तेज़ी से पढ़ा जा सके।</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">सेटिंग्स</string>
+    <string name="settings_subtitle">स्कैनिंग, गोपनीयता और प्राथमिकताएं कस्टमाइज़ करें</string>
+    <string name="section_language">ऐप भाषा</string>
+    <string name="language_auto">सिस्टम डिफ़ॉल्ट (ऑटो)</string>
+    <string name="section_theme">डिस्प्ले थीम</string>
+    <string name="theme_light">लाइट</string>
+    <string name="theme_dark">डार्क</string>
+    <string name="theme_system">सिस्टम</string>
+    <string name="section_scan_pref">स्कैनिंग प्राथमिकताएं</string>
+    <string name="auto_copy_setting">स्वतः क्लिपबोर्ड कॉपी</string>
+    <string name="auto_copy_desc">स्कैन होने पर टेक्स्ट स्वतः क्लिपबोर्ड में कॉपी करें</string>
+    <string name="vibrate_setting">हैप्टिक कंपन</string>
+    <string name="vibrate_desc">कोड का पता चलने पर हल्का कंपन</string>
+    <string name="section_storage">डेटा संग्रहण</string>
+    <string name="storage_local_title">100% डिवाइस पर सुरक्षित रूप से संग्रहीत</string>
+    <string name="storage_local_desc">सारा इतिहास आपके डिवाइस के स्थानीय SQLite डेटाबेस में सुरक्षित रहता है।</string>
+    <string name="btn_clear_history">सारा इतिहास डेटा साफ़ करें</string>
+    <string name="section_about">SCAN QR PRO के बारे में</string>
+    <string name="app_tagline">तेज़, सटीक और गोपनीयता-केंद्रित स्कैनर और जनरेटर</string>
+    <string name="privacy_policy_title">गोपनीयता नीति</string>
+    <string name="privacy_policy_subtitle">जानें कि आपका डेटा कैसे पूरी तरह सुरक्षित है</string>
+    <string name="rate_app_title">Google Play पर रेटिंग दें</string>
+    <string name="rate_app_subtitle">5-स्टार समीक्षा के साथ हमारा समर्थन करें</string>
+    <string name="share_app_title">ऐप साझा करें</string>
+    <string name="share_app_subtitle">मित्रों और परिवार को Scan Qr Pro सुझाएं</string>
+    <string name="licenses_title">ओपन सोर्स लाइसेंस</string>
+    <string name="licenses_subtitle">Google ML Kit, ZXing, Jetpack Compose, Room</string>
+    <string name="contact_support_title">समर्थन से संपर्क करें</string>
+    <string name="contact_support_subtitle">ईमेल द्वारा प्रतिक्रिया या समस्या रिपोर्ट भेजें</string>
+    <string name="copyright_text">© 2026 Scan Qr Pro. सर्वाधिकार सुरक्षित।</string>
+</resources>

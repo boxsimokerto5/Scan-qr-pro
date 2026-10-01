@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Scan Qr Pro</string>
+    <string name="tab_scan">Pindai</string>
+    <string name="tab_history">Riwayat</string>
+    <string name="tab_generate">Buat Kode</string>
+    <string name="tab_settings">Pengaturan</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">Pemindai Barcode &amp; QR</string>
+    <string name="scan_subtitle">Arahkan kamera ke barcode atau QR code</string>
+    <string name="camera_permission_required">Izin Kamera Diperlukan</string>
+    <string name="camera_permission_desc">Scan Qr Pro memerlukan izin akses kamera untuk memindai barcode dan QR code secara langsung.</string>
+    <string name="grant_permission">Berikan Izin Kamera</string>
+    <string name="flash_toggle">Lampu Senter</string>
+    <string name="gallery_scan">Pindai Gambar</string>
+
+    <!-- Scan Results -->
+    <string name="scan_result_title">Hasil Pemindaian</string>
+    <string name="action_open_browser">Buka di Browser</string>
+    <string name="action_send_whatsapp">Kirim via WhatsApp</string>
+    <string name="action_copy">Salin Teks</string>
+    <string name="action_share">Bagikan</string>
+    <string name="action_download_qr">Unduh QR Code</string>
+    <string name="download_success">QR Code berhasil disimpan ke Galeri (Pictures/ScanQrPro)</string>
+    <string name="download_failed">Gagal mengunduh gambar QR Code</string>
+    <string name="text_copied_toast">Teks disalin ke papan klip</string>
+
+    <!-- History Screen -->
+    <string name="history_title">Riwayat Pemindaian</string>
+    <string name="history_empty">Belum ada riwayat pemindaian</string>
+    <string name="history_empty_desc">Barcode yang dipindai atau dibuat akan otomatis muncul di sini.</string>
+    <string name="clear_history">Hapus Semua Riwayat</string>
+    <string name="search_history_placeholder">Cari riwayat...</string>
+    <string name="all_filter">Semua</string>
+
+    <!-- Generator Screen -->
+    <string name="gen_title">Buat Barcode &amp; QR</string>
+    <string name="gen_subtitle">Kustomisasi QR code, logo tengah, unduh, dan bagikan</string>
+    <string name="type_text">Teks</string>
+    <string name="type_url">Tautan URL</string>
+    <string name="type_wa">WhatsApp</string>
+    <string name="type_wifi">Wi-Fi</string>
+    <string name="gen_input_text_label">Teks Konten</string>
+    <string name="gen_input_text_hint">Ketik teks yang ingin dibuatkan QR code...</string>
+    <string name="gen_logo_title">Logo di Tengah QR</string>
+    <string name="gen_logo_subtitle">Opsional: sematkan gambar atau ikon</string>
+    <string name="gen_logo_upload">Unggah Logo dari Galeri</string>
+    <string name="gen_logo_change">Ganti Gambar Logo</string>
+    <string name="gen_logo_active">Aktif</string>
+    <string name="gen_logo_active_desc">Logo terpasang di QR code</string>
+    <string name="gen_qr_ready">QR Code Siap Digunakan</string>
+    <string name="gen_qr_ready_with_logo">QR Code Siap • Logo Tengah Tersemat</string>
+    <string name="gen_download_button">Unduh QR Code ke Galeri</string>
+    <string name="gen_downloaded">Tersimpan di Galeri (Pictures/ScanQrPro)</string>
+    <string name="gen_open_result">Buka di Halaman Hasil &amp; Riwayat</string>
+    <string name="gen_empty_hint">Ketik konten di atas untuk melihat QR Code secara langsung</string>
+    <string name="gen_logo_info" formatted="false">Menggunakan Error Correction Level H (30%) agar QR tetap terbaca 100% cepat oleh seluruh pemindai.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">Pengaturan</string>
+    <string name="settings_subtitle">Kustomisasi pemindaian, privasi, dan informasi aplikasi</string>
+    <string name="section_language">BAHASA APLIKASI</string>
+    <string name="language_auto">Ikuti Sistem (Otomatis)</string>
+    <string name="section_theme">TEMA TAMPILAN</string>
+    <string name="theme_light">Terang</string>
+    <string name="theme_dark">Gelap</string>
+    <string name="theme_system">Sistem</string>
+    <string name="section_scan_pref">PREFERENSI PEMINDAIAN</string>
+    <string name="auto_copy_setting">Salin Otomatis ke Clipboard</string>
+    <string name="auto_copy_desc">Secara otomatis menyalin teks barcode saat berhasil dipindai</string>
+    <string name="vibrate_setting">Getaran Haptik</string>
+    <string name="vibrate_desc">Getar halus saat barcode atau QR code terdeteksi</string>
+    <string name="section_storage">PENYIMPANAN DATA</string>
+    <string name="storage_local_title">100% Tersimpan di Perangkat Lokal</string>
+    <string name="storage_local_desc">Semua riwayat pemindaian disimpan secara aman dalam database SQLite Room lokal di ponsel Anda tanpa dikirim ke server luar.</string>
+    <string name="btn_clear_history">Bersihkan Semua Data Riwayat</string>
+    <string name="section_about">TENTANG SCAN QR PRO</string>
+    <string name="app_tagline">Pemindai &amp; Pembuat Kode Cepat, Akurat, dan Aman</string>
+    <string name="privacy_policy_title">Kebijakan Privasi (Privacy Policy)</string>
+    <string name="privacy_policy_subtitle">Pelajari bagaimana data Anda dilindungi sepenuhnya</string>
+    <string name="rate_app_title">Beri Rating di Google Play</string>
+    <string name="rate_app_subtitle">Dukung pengembangan aplikasi dengan ulasan bintang 5</string>
+    <string name="share_app_title">Bagikan Aplikasi</string>
+    <string name="share_app_subtitle">Rekomendasikan Scan Qr Pro kepada rekan &amp; keluarga</string>
+    <string name="licenses_title">Lisensi Sumber Terbuka</string>
+    <string name="licenses_subtitle">Google ML Kit, ZXing, Jetpack Compose, Room</string>
+    <string name="contact_support_title">Hubungi Dukungan / Pengembang</string>
+    <string name="contact_support_subtitle">Kirim masukan atau laporan bug via email</string>
+    <string name="copyright_text">© 2026 Scan Qr Pro. Hak Cipta Dilindungi.</string>
+</resources>

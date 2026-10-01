@@ -77,6 +77,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -176,13 +177,13 @@ fun GeneratorScreen(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "Buat Barcode & QR",
+                    text = stringResource(R.string.gen_title),
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "Kustomisasi QR code, logo tengah, unduh, dan bagikan",
+                    text = stringResource(R.string.gen_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -678,7 +679,7 @@ fun GeneratorScreen(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = if (effectiveLogoBitmap != null) "QR Code Siap • Logo Tengah Tersemat" else "QR Code Siap Digunakan",
+                                text = if (effectiveLogoBitmap != null) stringResource(R.string.gen_qr_ready_with_logo) else stringResource(R.string.gen_qr_ready),
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                                 fontWeight = FontWeight.Bold
@@ -726,7 +727,7 @@ fun GeneratorScreen(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = if (isDownloaded) "Tersimpan di Galeri (Pictures/ScanQrPro)" else "Unduh QR Code ke Galeri",
+                            text = if (isDownloaded) stringResource(R.string.gen_downloaded) else stringResource(R.string.gen_download_button),
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp
                         )

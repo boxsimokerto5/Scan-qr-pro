@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Scan Qr Pro</string>
+    <string name="tab_scan">مسح</string>
+    <string name="tab_history">السجل</string>
+    <string name="tab_generate">إنشاء</string>
+    <string name="tab_settings">الإعدادات</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">ماسح الباركود ورمز QR</string>
+    <string name="scan_subtitle">وجّه الكاميرا نحو أي رمز باركود أو QR</string>
+    <string name="camera_permission_required">إذن الكاميرا مطلوب</string>
+    <string name="camera_permission_desc">يتطلب التطبيق الوصول إلى الكاميرا لمسح الرموز في الوقت الفعلي.</string>
+    <string name="grant_permission">منح إذن الكاميرا</string>
+    <string name="flash_toggle">المصباح</string>
+    <string name="gallery_scan">مسح صورة</string>
+
+    <!-- Scan Results -->
+    <string name="scan_result_title">نتيجة المسح</string>
+    <string name="action_open_browser">فتح في المتصفح</string>
+    <string name="action_send_whatsapp">إرسال عبر واتساب</string>
+    <string name="action_copy">نسخ النص</string>
+    <string name="action_share">مشاركة</string>
+    <string name="action_download_qr">تنزيل رمز QR</string>
+    <string name="download_success">تم حفظ رمز QR في المعرض (Pictures/ScanQrPro)</string>
+    <string name="download_failed">فشل حفظ صورة رمز QR</string>
+    <string name="text_copied_toast">تم النسخ إلى الحافظة</string>
+
+    <!-- History Screen -->
+    <string name="history_title">سجل المسح</string>
+    <string name="history_empty">لا يوجد سجل مسح حتى الآن</string>
+    <string name="history_empty_desc">ستظهر الرموز الممسوحة أو المنشأة هنا تلقائياً.</string>
+    <string name="clear_history">مسح كل السجل</string>
+    <string name="search_history_placeholder">البحث في السجل...</string>
+    <string name="all_filter">الكل</string>
+
+    <!-- Generator Screen -->
+    <string name="gen_title">إنشاء QR وباركود</string>
+    <string name="gen_subtitle">أنشئ رموز QR مخصصة بسرعة فائقة</string>
+    <string name="type_text">نص</string>
+    <string name="type_url">رابط موقع</string>
+    <string name="type_wa">واتساب</string>
+    <string name="type_wifi">واي فاي</string>
+    <string name="gen_input_text_label">نص المحتوى</string>
+    <string name="gen_input_text_hint">اكتب النص لإنشاء رمز QR...</string>
+    <string name="gen_logo_title">شعار في وسط رمز QR</string>
+    <string name="gen_logo_subtitle">اختياري: تضمين صورة أو أيقونة في المنتصف</string>
+    <string name="gen_logo_upload">تحميل شعار من المعرض</string>
+    <string name="gen_logo_change">تغيير صورة الشعار</string>
+    <string name="gen_logo_active">مفعل</string>
+    <string name="gen_logo_active_desc">الشعار مدمج في رمز QR</string>
+    <string name="gen_qr_ready">رمز QR جاهز</string>
+    <string name="gen_qr_ready_with_logo">رمز QR جاهز • الشعار مدمج</string>
+    <string name="gen_download_button">تنزيل رمز QR إلى المعرض</string>
+    <string name="gen_downloaded">تم الحفظ في المعرض (Pictures/ScanQrPro)</string>
+    <string name="gen_open_result">فتح في النتائج والسجل</string>
+    <string name="gen_empty_hint">اكتب المحتوى أعلاه لمعاينة رمز QR مباشرة</string>
+    <string name="gen_logo_info" formatted="false">يستخدم تصحيح الأخطاء من المستوى H (30%) لقراءة سريعة وموثوقة.</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">الإعدادات</string>
+    <string name="settings_subtitle">تخصيص المسح والخصوصية وخيارات التطبيق</string>
+    <string name="section_language">لغة التطبيق</string>
+    <string name="language_auto">تلقائي (حسب لغة الجهاز)</string>
+    <string name="section_theme">المظهر</string>
+    <string name="theme_light">فاتح</string>
+    <string name="theme_dark">داكن</string>
+    <string name="theme_system">النظام</string>
+    <string name="section_scan_pref">تفضيلات المسح</string>
+    <string name="auto_copy_setting">نسخ تلقائي إلى الحافظة</string>
+    <string name="auto_copy_desc">نسخ النص فوراً عند نجاح المسح</string>
+    <string name="vibrate_setting">الاهتزاز</string>
+    <string name="vibrate_desc">اهتزاز خفيف عند اكتشاف رمز</string>
+    <string name="section_storage">تخزين البيانات</string>
+    <string name="storage_local_title">100% مخزن محلياً على الجهاز</string>
+    <string name="storage_local_desc">يتم حفظ جميع السجلات بشكل آمن داخل قاعدة بيانات SQLite المحلية على هاتفك.</string>
+    <string name="btn_clear_history">مسح كافة بيانات السجل</string>
+    <string name="section_about">حول SCAN QR PRO</string>
+    <string name="app_tagline">ماسح ومولد رموز سريع ودقيق يراعي الخصوصية تماماً</string>
+    <string name="privacy_policy_title">سياسة الخصوصية</string>
+    <string name="privacy_policy_subtitle">تعرف على كيفية حماية بياناتك بالكامل</string>
+    <string name="rate_app_title">تقييم التطبيق على Google Play</string>
+    <string name="rate_app_subtitle">ادعمنا بتقييم 5 نجوم</string>
+    <string name="share_app_title">مشاركة التطبيق</string>
+    <string name="share_app_subtitle">رشح التطبيق للأصدقاء والعائلة</string>
+    <string name="licenses_title">تراخيص المصدر المفتوح</string>
+    <string name="licenses_subtitle">Google ML Kit, ZXing, Jetpack Compose, Room</string>
+    <string name="contact_support_title">التواصل مع الدعم</string>
+    <string name="contact_support_subtitle">إرسال الملاحظات أو الإبلاغ عن مشكلة</string>
+    <string name="copyright_text">© 2026 Scan Qr Pro. جميع الحقوق محفوظة.</string>
+</resources>

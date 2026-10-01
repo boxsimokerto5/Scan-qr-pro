@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Scan Qr Pro</string>
+    <string name="tab_scan">スキャン</string>
+    <string name="tab_history">履歴</string>
+    <string name="tab_generate">作成</string>
+    <string name="tab_settings">設定</string>
+
+    <!-- Scanner Screen -->
+    <string name="scan_title">バーコード＆QRリーダー</string>
+    <string name="scan_subtitle">カメラをバーコードまたはQRコードに向けてください</string>
+    <string name="camera_permission_required">カメラの権限が必要です</string>
+    <string name="camera_permission_desc">コードをリアルタイムで読み取るにはカメラ権限が必要です。</string>
+    <string name="grant_permission">権限を許可する</string>
+    <string name="flash_toggle">ライト</string>
+    <string name="gallery_scan">画像スキャン</string>
+
+    <!-- Scan Results -->
+    <string name="scan_result_title">スキャン結果</string>
+    <string name="action_open_browser">ブラウザで開く</string>
+    <string name="action_send_whatsapp">WhatsAppで送信</string>
+    <string name="action_copy">テキストをコピー</string>
+    <string name="action_share">共有</string>
+    <string name="action_download_qr">QRコードを保存</string>
+    <string name="download_success">QRコードをギャラリーに保存しました (Pictures/ScanQrPro)</string>
+    <string name="download_failed">QRコード画像の保存に失敗しました</string>
+    <string name="text_copied_toast">クリップボードにコピーしました</string>
+
+    <!-- History Screen -->
+    <string name="history_title">スキャン履歴</string>
+    <string name="history_empty">履歴がありません</string>
+    <string name="history_empty_desc">スキャンまたは作成したコードはここに表示されます。</string>
+    <string name="clear_history">すべての履歴を削除</string>
+    <string name="search_history_placeholder">履歴を検索...</string>
+    <string name="all_filter">すべて</string>
+
+    <!-- Generator Screen -->
+    <string name="gen_title">QR＆バーコード作成</string>
+    <string name="gen_subtitle">高速でカスタムQRコードを作成</string>
+    <string name="type_text">テキスト</string>
+    <string name="type_url">URL</string>
+    <string name="type_wa">WhatsApp</string>
+    <string name="type_wifi">Wi-Fi</string>
+    <string name="gen_input_text_label">内容テキスト</string>
+    <string name="gen_input_text_hint">QRコードにする内容を入力...</string>
+    <string name="gen_logo_title">QRコードの中央ロゴ</string>
+    <string name="gen_logo_subtitle">任意：中央に画像やアイコンを配置</string>
+    <string name="gen_logo_upload">ギャラリーからロゴを選択</string>
+    <string name="gen_logo_change">ロゴ画像を変更</string>
+    <string name="gen_logo_active">有効</string>
+    <string name="gen_logo_active_desc">QRコードの中央にロゴが配置されています</string>
+    <string name="gen_qr_ready">QRコード準備完了</string>
+    <string name="gen_qr_ready_with_logo">QRコード準備完了 • 中央ロゴ配置済み</string>
+    <string name="gen_download_button">ギャラリーにQRコードを保存</string>
+    <string name="gen_downloaded">保存完了 (Pictures/ScanQrPro)</string>
+    <string name="gen_open_result">結果と履歴で確認</string>
+    <string name="gen_empty_hint">内容を入力するとプレビューが表示されます</string>
+    <string name="gen_logo_info" formatted="false">誤り訂正レベルH（30%）採用により、全スキャナーで高速読み取り可能。</string>
+
+    <!-- Settings Screen -->
+    <string name="settings_title">設定</string>
+    <string name="settings_subtitle">スキャン、プライバシー、各種設定をカスタマイズ</string>
+    <string name="section_language">アプリの言語</string>
+    <string name="language_auto">端末の設定に従う（自動）</string>
+    <string name="section_theme">テーマ設定</string>
+    <string name="theme_light">ライト</string>
+    <string name="theme_dark">ダーク</string>
+    <string name="theme_system">システム</string>
+    <string name="section_scan_pref">スキャン設定</string>
+    <string name="auto_copy_setting">自動コピー</string>
+    <string name="auto_copy_desc">スキャン成功時にテキストをクリップボードへ自動コピー</string>
+    <string name="vibrate_setting">バイブレーション</string>
+    <string name="vibrate_desc">コード検出時に軽く振動します</string>
+    <string name="section_storage">データ保存</string>
+    <string name="storage_local_title">100% 端末内に安全保存</string>
+    <string name="storage_local_desc">すべての履歴データはお使いの端末内SQLiteデータベースにのみ安全に保存されます。</string>
+    <string name="btn_clear_history">すべての履歴データを削除</string>
+    <string name="section_about">SCAN QR PRO について</string>
+    <string name="app_tagline">高速・高精度・プライバシー重視のQRリーダー＆ジェネレーター</string>
+    <string name="privacy_policy_title">プライバシーポリシー</string>
+    <string name="privacy_policy_subtitle">データ保護の取り組みについて確認</string>
+    <string name="rate_app_title">Google Play で評価する</string>
+    <string name="rate_app_subtitle">星5つのレビューで応援をお願いします</string>
+    <string name="share_app_title">アプリを共有</string>
+    <string name="share_app_subtitle">友達や家族に Scan Qr Pro をおすすめ</string>
+    <string name="licenses_title">オープンソースライセンス</string>
+    <string name="licenses_subtitle">Google ML Kit, ZXing, Jetpack Compose, Room</string>
+    <string name="contact_support_title">サポートへのお問い合わせ</string>
+    <string name="contact_support_subtitle">フィードバックや不具合報告をメールで送信</string>
+    <string name="copyright_text">© 2026 Scan Qr Pro. All rights reserved.</string>
+</resources>
