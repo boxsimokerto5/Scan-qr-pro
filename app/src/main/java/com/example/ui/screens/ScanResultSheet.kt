@@ -243,7 +243,8 @@ fun ScanResultSheet(
                 if (isAutoCopied || isCopiedManually) {
                     Surface(
                         color = Color(0xFF10B981).copy(alpha = 0.15f),
-                        shape = RoundedCornerShape(12.dp)
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.testTag("auto_copied_badge")
                     ) {
                         Row(
                             modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
@@ -257,7 +258,7 @@ fun ScanResultSheet(
                             )
                             Spacer(modifier = Modifier.width(6.dp))
                             Text(
-                                text = "Tersalin ke Clipboard",
+                                text = if (isAutoCopied) "Tersalin Otomatis ke Clipboard" else "Tersalin ke Clipboard",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = Color(0xFF10B981)
@@ -408,12 +409,12 @@ fun ScanResultSheet(
                     shape = RoundedCornerShape(14.dp)
                 ) {
                     Icon(
-                        imageVector = if (isCopiedManually) Icons.Default.Check else Icons.Default.ContentCopy,
+                        imageVector = if (isCopiedManually || isAutoCopied) Icons.Default.Check else Icons.Default.ContentCopy,
                         contentDescription = null,
                         modifier = Modifier.size(18.dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = if (isCopiedManually) "Tersalin" else "Salin Teks")
+                    Text(text = if (isCopiedManually || isAutoCopied) "Tersalin" else "Salin Teks")
                 }
 
                 FilledTonalButton(

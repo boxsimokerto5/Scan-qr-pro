@@ -104,6 +104,7 @@ fun MainAppScreen(
     val activeScanResult by viewModel.activeScanResult.collectAsStateWithLifecycle()
     val toastMessage by viewModel.toastMessage.collectAsStateWithLifecycle()
     val autoCopyEnabled by viewModel.preferences.autoCopy.collectAsStateWithLifecycle()
+    val wasAutoCopied by viewModel.wasAutoCopied.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Toast & snackbar feedback
@@ -244,7 +245,7 @@ fun MainAppScreen(
         activeScanResult?.let { item ->
             ScanResultSheet(
                 item = item,
-                isAutoCopied = autoCopyEnabled,
+                isAutoCopied = wasAutoCopied,
                 onDismiss = { viewModel.clearActiveScanResult() },
                 onToggleFavorite = { viewModel.toggleFavorite(it) },
                 onDeleteItem = { viewModel.deleteScan(it) }

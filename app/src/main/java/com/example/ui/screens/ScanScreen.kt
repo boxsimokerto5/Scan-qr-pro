@@ -351,10 +351,7 @@ fun ScanScreen(
                                     valueType = Barcode.TYPE_URL,
                                     valueTypeName = "Tautan Web / URL"
                                 )
-                                viewModel.showScanResult(sampleScan)
-                                if (autoCopyEnabled) {
-                                    BarcodeUtils.copyToClipboard(context, sampleScan.rawValue, showToast = false)
-                                }
+                                viewModel.processSimulatedScan(sampleScan, context)
                             }
                             .testTag("test_simulate_url")
                     ) {
@@ -392,10 +389,7 @@ fun ScanScreen(
                                     valueType = Barcode.TYPE_PRODUCT,
                                     valueTypeName = "Produk Komersial"
                                 )
-                                viewModel.showScanResult(sampleScan)
-                                if (autoCopyEnabled) {
-                                    BarcodeUtils.copyToClipboard(context, sampleScan.rawValue, showToast = false)
-                                }
+                                viewModel.processSimulatedScan(sampleScan, context)
                             }
                             .testTag("test_simulate_barcode")
                     ) {

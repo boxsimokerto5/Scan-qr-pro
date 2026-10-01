@@ -146,13 +146,34 @@ object BarcodeUtils {
         }
     }
 
-    fun copyToClipboard(context: Context, text: String, showToast: Boolean = true): Boolean {
+    fun copyToClipboard(
+        context: Context,
+        text: String,
+        showToast: Boolean = true,
+        customMessage: String? = null
+    ): Boolean {
         return try {
-            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val appContext = context.applicationContext ?: context
+            val clipboard = appContext.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                ?: return false
             val clip = ClipData.newPlainText("Scan Qr Pro", text)
-            clipboard.setPrimaryClip(clip)
-            if (showToast) {
-                Toast.makeText(context, "Teks disalin ke clipboard", Toast.LENGTH_SHORT).show()
+
+            if (android.os.Looper.myLooper() == android.os.Looper.getMainLooper()) {
+                clipboard.setPrimaryClip(clip)
+                if (showToast) {
+                    val msg = customMessage ?: "Teks disalin ke clipboard"
+                    Toast.makeText(appContext, msg, Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                android.os.Handler(android.os.Looper.getMainLooper()).post {
+                    try {
+                        clipboard.setPrimaryClip(clip)
+                        if (showToast) {
+                            val msg = customMessage ?: "Teks disalin ke clipboard"
+                            Toast.makeText(appContext, msg, Toast.LENGTH_SHORT).show()
+                        }
+                    } catch (_: Exception) {}
+                }
             }
             true
         } catch (e: Exception) {

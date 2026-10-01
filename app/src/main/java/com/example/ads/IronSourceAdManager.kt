@@ -75,8 +75,32 @@ object IronSourceAdManager {
     // Current pending reward callback
     private var onUserRewardedCallback: (() -> Unit)? = null
 
+    fun isEmulator(): Boolean {
+        return (android.os.Build.FINGERPRINT.startsWith("generic")
+                || android.os.Build.FINGERPRINT.startsWith("unknown")
+                || android.os.Build.MODEL.contains("google_sdk")
+                || android.os.Build.MODEL.contains("Emulator")
+                || android.os.Build.MODEL.contains("Android SDK built for x86")
+                || android.os.Build.MANUFACTURER.contains("Genymotion")
+                || android.os.Build.HARDWARE.contains("goldfish")
+                || android.os.Build.HARDWARE.contains("ranchu")
+                || android.os.Build.PRODUCT.contains("sdk_gphone")
+                || android.os.Build.PRODUCT.contains("google_sdk")
+                || android.os.Build.PRODUCT.contains("sdk")
+                || android.os.Build.PRODUCT.contains("sdk_x86")
+                || android.os.Build.PRODUCT.contains("vbox86p")
+                || android.os.Build.PRODUCT.contains("emulator")
+                || android.os.Build.PRODUCT.contains("simulator")
+                || (android.os.Build.BRAND.startsWith("generic") && android.os.Build.DEVICE.startsWith("generic")))
+    }
+
     fun init(activity: Activity) {
         if (isInitialized.getAndSet(true)) return
+
+        if (isEmulator()) {
+            Log.d(TAG, "Running in Android Emulator. Suppressing native ad SDK renderer to avoid MESA driver and AdServices measurement service issues.")
+            return
+        }
 
         try {
             Log.d(TAG, "Initializing ironSource SDK with App Key: $APP_KEY")
@@ -185,6 +209,10 @@ object IronSourceAdManager {
      * If unavailable (offline/no fill), immediately invokes onRewarded to ensure great user experience.
      */
     fun showRewardedAdForDownload(activity: Activity, onRewarded: () -> Unit) {
+        if (isEmulator()) {
+            onRewarded()
+            return
+        }
         try {
             if (IronSource.isRewardedVideoAvailable()) {
                 onUserRewardedCallback = onRewarded
@@ -205,6 +233,8 @@ object IronSourceAdManager {
      * Preloads automatically to guarantee the interstitial is ready on the 5th touch.
      */
     fun recordActionAndCheckInterstitial(activity: Activity, threshold: Int = 5) {
+        if (isEmulator()) return
+
         val count = actionCounter.incrementAndGet()
         Log.d(TAG, "Sentuhan aksi pengguna: #$count dari $threshold")
 
@@ -232,12 +262,14 @@ object IronSourceAdManager {
     }
 
     fun onResume(activity: Activity) {
+        if (isEmulator()) return
         try {
             IronSource.onResume(activity)
         } catch (_: Exception) {}
     }
 
     fun onPause(activity: Activity) {
+        if (isEmulator()) return
         try {
             IronSource.onPause(activity)
         } catch (_: Exception) {}
@@ -258,7 +290,7 @@ fun IronSourceBanner(
     var isBannerLoaded by remember { mutableStateOf(false) }
 
     DisposableEffect(activity) {
-        if (activity != null) {
+        if (activity != null && !IronSourceAdManager.isEmulator()) {
             try {
                 val banner = IronSource.createBanner(activity, ISBannerSize.BANNER)
                 banner.levelPlayBannerListener = object : LevelPlayBannerListener {

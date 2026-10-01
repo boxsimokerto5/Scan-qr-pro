@@ -76,6 +76,12 @@ class ScannerViewModel(application: Application) : AndroidViewModel(application)
     private val _activeScanResult = MutableStateFlow<ScanItemEntity?>(null)
     val activeScanResult: StateFlow<ScanItemEntity?> = _activeScanResult.asStateFlow()
 
+    private val _wasAutoCopied = MutableStateFlow(false)
+    val wasAutoCopied: StateFlow<Boolean> = _wasAutoCopied.asStateFlow()
+
+    @Volatile
+    private var isHandlingScan = false
+
     private val _isTorchOn = MutableStateFlow(false)
     val isTorchOn: StateFlow<Boolean> = _isTorchOn.asStateFlow()
 
@@ -135,15 +141,21 @@ class ScannerViewModel(application: Application) : AndroidViewModel(application)
 
     fun clearActiveScanResult() {
         _activeScanResult.value = null
+        _wasAutoCopied.value = false
+        isHandlingScan = false
     }
 
     fun showScanResult(item: ScanItemEntity) {
+        _wasAutoCopied.value = false
         _activeScanResult.value = item
     }
 
     fun onBarcodeDetected(barcode: Barcode, context: Context) {
-        if (_activeScanResult.value != null) return
         val rawValue = barcode.rawValue ?: return
+        if (rawValue.isBlank()) return
+        if (_activeScanResult.value != null || isHandlingScan) return
+        isHandlingScan = true
+
         val displayValue = barcode.displayValue ?: rawValue
         val format = barcode.format
         val formatName = BarcodeUtils.getFormatName(format)
@@ -159,18 +171,68 @@ class ScannerViewModel(application: Application) : AndroidViewModel(application)
             valueTypeName = valueTypeName
         )
 
+        // 1. Immediately copy to system clipboard if auto-copy is enabled
+        val isAuto = preferences.autoCopy.value
+        _wasAutoCopied.value = isAuto
+        if (isAuto) {
+            BarcodeUtils.copyToClipboard(
+                context = context,
+                text = rawValue,
+                showToast = true,
+                customMessage = "Konten QR berhasil disalin otomatis ke papan klip!"
+            )
+        }
+
+        // 2. Immediately trigger haptic feedback
+        if (preferences.vibration.value) {
+            BarcodeUtils.triggerVibration(context)
+        }
+
+        // 3. Immediately display scan result sheet to user
+        _activeScanResult.value = newScan
+
+        // 4. Asynchronously persist to Room local database
         viewModelScope.launch {
-            val id = repository.insertScan(newScan)
-            val savedEntity = newScan.copy(id = id)
-            _activeScanResult.value = savedEntity
-
-            if (preferences.vibration.value) {
-                BarcodeUtils.triggerVibration(context)
+            try {
+                val id = repository.insertScan(newScan)
+                if (_activeScanResult.value == newScan) {
+                    _activeScanResult.value = newScan.copy(id = id)
+                }
+            } finally {
+                isHandlingScan = false
             }
+        }
+    }
 
-            if (preferences.autoCopy.value) {
-                BarcodeUtils.copyToClipboard(context, rawValue, showToast = false)
-                _toastMessage.value = "Tersalin otomatis ke papan klip!"
+    fun processSimulatedScan(sampleScan: ScanItemEntity, context: Context) {
+        if (_activeScanResult.value != null || isHandlingScan) return
+        isHandlingScan = true
+
+        val isAuto = preferences.autoCopy.value
+        _wasAutoCopied.value = isAuto
+        if (isAuto) {
+            BarcodeUtils.copyToClipboard(
+                context = context,
+                text = sampleScan.rawValue,
+                showToast = true,
+                customMessage = "Konten QR berhasil disalin otomatis ke papan klip!"
+            )
+        }
+
+        if (preferences.vibration.value) {
+            BarcodeUtils.triggerVibration(context)
+        }
+
+        _activeScanResult.value = sampleScan
+
+        viewModelScope.launch {
+            try {
+                val id = repository.insertScan(sampleScan)
+                if (_activeScanResult.value == sampleScan) {
+                    _activeScanResult.value = sampleScan.copy(id = id)
+                }
+            } finally {
+                isHandlingScan = false
             }
         }
     }

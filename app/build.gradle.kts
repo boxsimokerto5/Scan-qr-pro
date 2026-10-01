@@ -97,7 +97,7 @@ dependencies {
   
   // ironSource Mediation SDK & Google Play Ads Identifiers
   implementation("com.ironsource.sdk:mediationsdk:8.6.0")
-  implementation("com.google.android.gms:play-services-ads-identifier:18.2.0")
+  implementation("com.google.android.gms:play-services-ads-identifier:18.0.1")
   implementation("com.google.android.gms:play-services-appset:16.1.0")
 
   // Pangle Mediation Adapter
