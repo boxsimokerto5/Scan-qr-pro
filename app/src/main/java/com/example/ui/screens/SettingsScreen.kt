@@ -1,5 +1,6 @@
 package com.example.ui.screens
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -694,23 +695,26 @@ fun SettingsScreen(
 
                     ScanPreferences.AVAILABLE_LANGUAGES.forEach { lang ->
                         val isSelected = currentLanguage == lang.code
+                        val onSelectLanguage: () -> Unit = {
+                            if (lang.code != currentLanguage) {
+                                viewModel.setAppLanguage(lang.code)
+                                showLanguageDialog = false
+                                (context as? Activity)?.recreate()
+                            } else {
+                                showLanguageDialog = false
+                            }
+                        }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(10.dp))
-                                .clickable {
-                                    viewModel.setAppLanguage(lang.code)
-                                    showLanguageDialog = false
-                                }
+                                .clickable(onClick = onSelectLanguage)
                                 .padding(vertical = 8.dp, horizontal = 6.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             RadioButton(
                                 selected = isSelected,
-                                onClick = {
-                                    viewModel.setAppLanguage(lang.code)
-                                    showLanguageDialog = false
-                                }
+                                onClick = onSelectLanguage
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Column(modifier = Modifier.weight(1f)) {

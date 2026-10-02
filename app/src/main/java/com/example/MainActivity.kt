@@ -60,6 +60,26 @@ enum class OmniScanTab {
 class MainActivity : ComponentActivity() {
     private val viewModel: ScannerViewModel by viewModels()
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        val prefs = newBase.getSharedPreferences("scanqrpro_settings", android.content.Context.MODE_PRIVATE)
+        val lang = prefs.getString("key_app_language", "SYSTEM") ?: "SYSTEM"
+        val contextToUse = if (lang != "SYSTEM") {
+            try {
+                val locale = Locale.forLanguageTag(lang)
+                Locale.setDefault(locale)
+                val config = Configuration(newBase.resources.configuration)
+                config.setLocale(locale)
+                config.setLayoutDirection(locale)
+                newBase.createConfigurationContext(config)
+            } catch (_: Throwable) {
+                newBase
+            }
+        } else {
+            newBase
+        }
+        super.attachBaseContext(contextToUse)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,7 +91,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
-            val appLanguage by viewModel.appLanguage.collectAsStateWithLifecycle()
             val systemDark = isSystemInDarkTheme()
             val isDark = when (themeMode) {
                 AppThemeMode.DARK -> true
@@ -79,32 +98,14 @@ class MainActivity : ComponentActivity() {
                 AppThemeMode.SYSTEM -> systemDark
             }
 
-            val baseContext = LocalContext.current
-            val localizedContext = remember(appLanguage, baseContext) {
-                if (appLanguage == "SYSTEM") {
-                    baseContext
-                } else {
-                    val locale = Locale.forLanguageTag(appLanguage)
-                    val config = Configuration(baseContext.resources.configuration)
-                    config.setLocale(locale)
-                    config.setLayoutDirection(locale)
-                    baseContext.createConfigurationContext(config)
-                }
-            }
-
-            CompositionLocalProvider(
-                LocalContext provides localizedContext,
-                LocalConfiguration provides localizedContext.resources.configuration
-            ) {
-                ScanQrProTheme(darkTheme = isDark) {
-                    MainAppScreen(
-                        viewModel = viewModel,
-                        isDark = isDark,
-                        onUserAction = {
-                            com.example.ads.IronSourceAdManager.recordActionAndCheckInterstitial(this, threshold = 5)
-                        }
-                    )
-                }
+            ScanQrProTheme(darkTheme = isDark) {
+                MainAppScreen(
+                    viewModel = viewModel,
+                    isDark = isDark,
+                    onUserAction = {
+                        com.example.ads.IronSourceAdManager.recordActionAndCheckInterstitial(this, threshold = 5)
+                    }
+                )
             }
         }
     }
