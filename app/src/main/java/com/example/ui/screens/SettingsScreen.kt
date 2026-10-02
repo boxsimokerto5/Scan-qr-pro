@@ -1007,20 +1007,26 @@ private fun openPlayStoreForRating(context: Context) {
 }
 
 private fun shareApp(context: Context) {
-    val packageName = context.packageName
-    val shareIntent = Intent(Intent.ACTION_SEND).apply {
-        type = "text/plain"
-        putExtra(
-            Intent.EXTRA_SUBJECT,
-            "Scan Qr Pro"
-        )
-        putExtra(
-            Intent.EXTRA_TEXT,
-            "Scan Qr Pro: https://play.google.com/store/apps/details?id=$packageName"
-        )
-        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    try {
+        val packageName = context.packageName
+        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(
+                Intent.EXTRA_SUBJECT,
+                "Scan Qr Pro"
+            )
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Scan Qr Pro - Pemindai Barcode & QR Code: https://play.google.com/store/apps/details?id=$packageName"
+            )
+        }
+        val chooser = Intent.createChooser(shareIntent, "Bagikan Scan Qr Pro via").apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        context.startActivity(chooser)
+    } catch (_: Exception) {
+        Toast.makeText(context, "Tidak dapat membuka aplikasi untuk berbagi", Toast.LENGTH_SHORT).show()
     }
-    context.startActivity(Intent.createChooser(shareIntent, "Bagikan Scan Qr Pro via"))
 }
 
 private fun contactSupport(context: Context) {
