@@ -53,6 +53,12 @@ jobs:
           if [ -n "${{ secrets.KEYSTORE_BASE64 }}" ]; then
             echo "Menggunakan Keystore yang tersimpan di GitHub Secrets..."
             echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > "$KEYSTORE_FILE"
+          elif [ -f "upload-keystore.base64" ]; then
+            echo "Menggunakan Keystore permanen dari upload-keystore.base64 di repository..."
+            base64 -d upload-keystore.base64 > "$KEYSTORE_FILE"
+          elif [ -f "my-upload-key.jks" ]; then
+            echo "Menggunakan my-upload-key.jks yang sudah ada..."
+            cp "my-upload-key.jks" "$KEYSTORE_FILE"
           else
             echo "Membuat production release keystore secara otomatis..."
             keytool -genkeypair -v \

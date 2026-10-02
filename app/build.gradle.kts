@@ -1,4 +1,5 @@
 import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
+import java.util.Base64
 
 plugins {
   alias(libs.plugins.android.application)
@@ -26,6 +27,15 @@ android {
     create("release") {
       val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
       val keyFile = file(keystorePath)
+      if (!keyFile.exists()) {
+        val base64File = file("${rootDir}/upload-keystore.base64")
+        if (base64File.exists()) {
+          try {
+            val bytes = Base64.getMimeDecoder().decode(base64File.readText().trim())
+            keyFile.writeBytes(bytes)
+          } catch (_: Exception) {}
+        }
+      }
       if (keyFile.exists()) {
         storeFile = keyFile
         storePassword = System.getenv("STORE_PASSWORD") ?: "ScanQrPro2026SecurePass"
