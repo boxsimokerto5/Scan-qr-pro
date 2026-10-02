@@ -63,7 +63,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        com.example.ads.IronSourceAdManager.init(this)
+        try {
+            com.example.ads.IronSourceAdManager.init(this)
+        } catch (t: Throwable) {
+            android.util.Log.e("MainActivity", "IronSourceAdManager init failed", t)
+        }
 
         setContent {
             val themeMode by viewModel.themeMode.collectAsStateWithLifecycle()
@@ -107,12 +111,16 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        com.example.ads.IronSourceAdManager.onResume(this)
+        try {
+            com.example.ads.IronSourceAdManager.onResume(this)
+        } catch (_: Throwable) {}
     }
 
     override fun onPause() {
         super.onPause()
-        com.example.ads.IronSourceAdManager.onPause(this)
+        try {
+            com.example.ads.IronSourceAdManager.onPause(this)
+        } catch (_: Throwable) {}
     }
 }
 

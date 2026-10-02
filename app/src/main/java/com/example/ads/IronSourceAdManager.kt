@@ -119,8 +119,8 @@ object IronSourceAdManager {
 
             // Pre-load Interstitial
             IronSource.loadInterstitial()
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to initialize ironSource", e)
+        } catch (t: Throwable) {
+            Log.e(TAG, "Failed to initialize ironSource", t)
         }
     }
 
@@ -242,7 +242,7 @@ object IronSourceAdManager {
         if (!IronSource.isInterstitialReady()) {
             try {
                 IronSource.loadInterstitial()
-            } catch (_: Exception) {}
+            } catch (_: Throwable) {}
         }
 
         if (count >= threshold) {
@@ -255,7 +255,7 @@ object IronSourceAdManager {
                     Log.d(TAG, "Interstitial sedang dimuat di sentuhan ke-$threshold, memuat ulang...")
                     IronSource.loadInterstitial()
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 Log.e(TAG, "Error displaying interstitial", e)
             }
         }
@@ -265,14 +265,14 @@ object IronSourceAdManager {
         if (isEmulator()) return
         try {
             IronSource.onResume(activity)
-        } catch (_: Exception) {}
+        } catch (_: Throwable) {}
     }
 
     fun onPause(activity: Activity) {
         if (isEmulator()) return
         try {
             IronSource.onPause(activity)
-        } catch (_: Exception) {}
+        } catch (_: Throwable) {}
     }
 }
 
@@ -309,8 +309,8 @@ fun IronSourceBanner(
                 }
                 IronSource.loadBanner(banner)
                 bannerLayout = banner
-            } catch (e: Exception) {
-                Log.e("IronSourceBanner", "Error creating banner", e)
+            } catch (t: Throwable) {
+                Log.e("IronSourceBanner", "Error creating banner", t)
             }
         }
 
@@ -318,7 +318,7 @@ fun IronSourceBanner(
             bannerLayout?.let {
                 try {
                     IronSource.destroyBanner(it)
-                } catch (_: Exception) {}
+                } catch (_: Throwable) {}
             }
             bannerLayout = null
         }
